@@ -74,7 +74,7 @@ python3 viewer_server.py
 
 ### KROK 2: Otwórz w Przeglądarce
 ```
-http://localhost:5000
+http://localhost:5001
 ```
 
 ### KROK 3: Przeglądaj Dane

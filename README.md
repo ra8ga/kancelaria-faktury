@@ -50,7 +50,7 @@ Archiwum/
 python3 viewer_server.py
 
 # Otwórz w przeglądarce
-open http://localhost:5000
+open http://localhost:5001
 ```
 
 Przeglądarka oferuje:
