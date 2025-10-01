@@ -1,0 +1,1071 @@
+================================================================================
+EKSPORT DANYCH DO SQLITE
+================================================================================
+
+Łączenie z SQL Server...
+✓ Połączono z SQL Server
+
+Tworzenie bazy SQLite: dane_archiwalne.db
+✓ Baza SQLite utworzona
+
+================================================================================
+Baza: ADWKAROLINA_firma
+================================================================================
+Tabel do eksportu: 16
+
+  [1] dbo.ADRESY → ADWKAROLINA_firma_dbo_ADRESY
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [2] dbo.Deklaracje → ADWKAROLINA_firma_dbo_Deklaracje
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [3] dbo.DESCRIPTION → ADWKAROLINA_firma_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [4] dbo.FIRMA → ADWKAROLINA_firma_dbo_FIRMA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [5] dbo.FIRMAKONTA → ADWKAROLINA_firma_dbo_FIRMAKONTA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [6] dbo.IMAGES → ADWKAROLINA_firma_dbo_IMAGES
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [7] dbo.KASY → ADWKAROLINA_firma_dbo_KASY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [8] dbo.KONTA → ADWKAROLINA_firma_dbo_KONTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [9] dbo.slwGrupyKh → ADWKAROLINA_firma_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [10] dbo.SlwKONTRAHENT → ADWKAROLINA_firma_dbo_SlwKONTRAHENT
+    Rekordów: 20
+    ✓ Wstawiono 20 rekordów       
+
+  [11] dbo.slwRodoOdbiorcy → ADWKAROLINA_firma_dbo_slwRodoOdbiorcy
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [12] dbo.slwWaluta → ADWKAROLINA_firma_dbo_slwWaluta
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [13] dbo.slwWalutaKurs → ADWKAROLINA_firma_dbo_slwWalutaKurs
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [14] dbo.slwWalutaTabela → ADWKAROLINA_firma_dbo_slwWalutaTabela
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [15] dbo.slwZalaczniki → ADWKAROLINA_firma_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [16] dbo.WSPOLNICY → ADWKAROLINA_firma_dbo_WSPOLNICY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+================================================================================
+Baza: ADWKAROLINA_Magazyn
+================================================================================
+Tabel do eksportu: 47
+
+  [17] dbo.dbUpdate → ADWKAROLINA_Magazyn_dbo_dbUpdate
+    Rekordów: 6
+    ✓ Wstawiono 6 rekordów       
+
+  [18] dbo.DESCRIPTION → ADWKAROLINA_Magazyn_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [19] dbo.DICT_PLATNOSCI_TYPY → ADWKAROLINA_Magazyn_dbo_DICT_PLATNOSCI_TYPY
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [20] dbo.DICT_RODZAJ_TRANSAKCJI → ADWKAROLINA_Magazyn_dbo_DICT_RODZAJ_TRANSAKCJI
+    Rekordów: 11
+    ✓ Wstawiono 11 rekordów       
+
+  [21] dbo.dokDEF → ADWKAROLINA_Magazyn_dbo_dokDEF
+    Rekordów: 47
+    ✓ Wstawiono 47 rekordów       
+
+  [22] dbo.dokLINK → ADWKAROLINA_Magazyn_dbo_dokLINK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [23] dbo.dokNOTA → ADWKAROLINA_Magazyn_dbo_dokNOTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [24] dbo.dokNUMERY → ADWKAROLINA_Magazyn_dbo_dokNUMERY
+    Rekordów: 19
+    ✓ Wstawiono 19 rekordów       
+
+  [25] dbo.dokPLK → ADWKAROLINA_Magazyn_dbo_dokPLK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [26] dbo.dokTOW → ADWKAROLINA_Magazyn_dbo_dokTOW
+    Rekordów: 132
+    ✓ Wstawiono 132 rekordów       
+
+  [27] dbo.dokVAT → ADWKAROLINA_Magazyn_dbo_dokVAT
+    Rekordów: 264
+    ✓ Wstawiono 264 rekordów       
+
+  [28] dbo.KASY → ADWKAROLINA_Magazyn_dbo_KASY
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [29] dbo.KONFIGURACJA → ADWKAROLINA_Magazyn_dbo_KONFIGURACJA
+    Rekordów: 73
+    ✓ Wstawiono 73 rekordów       
+
+  [30] dbo.lstDokArk → ADWKAROLINA_Magazyn_dbo_lstDokArk
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [31] dbo.lstDokInw → ADWKAROLINA_Magazyn_dbo_lstDokInw
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [32] dbo.lstDokTOW → ADWKAROLINA_Magazyn_dbo_lstDokTOW
+    Rekordów: 142
+    ✓ Wstawiono 142 rekordów       
+
+  [33] dbo.lstNotes → ADWKAROLINA_Magazyn_dbo_lstNotes
+    Rekordów: 135
+    ✓ Wstawiono 135 rekordów       
+
+  [34] dbo.lstOdsetki → ADWKAROLINA_Magazyn_dbo_lstOdsetki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [35] dbo.magRUCH → ADWKAROLINA_Magazyn_dbo_magRUCH
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [36] dbo.PLATNOSCI → ADWKAROLINA_Magazyn_dbo_PLATNOSCI
+    Rekordów: 11
+    ✓ Wstawiono 11 rekordów       
+
+  [37] dbo.PLATNOSCI_DOKUMENTY → ADWKAROLINA_Magazyn_dbo_PLATNOSCI_DOKUMENTY
+    Rekordów: 11
+    ✓ Wstawiono 11 rekordów       
+
+  [38] dbo.progver → ADWKAROLINA_Magazyn_dbo_progver
+    Rekordów: 6
+    ✓ Wstawiono 6 rekordów       
+
+  [39] dbo.slwCennik → ADWKAROLINA_Magazyn_dbo_slwCennik
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [40] dbo.slwDok_Kategorie → ADWKAROLINA_Magazyn_dbo_slwDok_Kategorie
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [41] dbo.slwDrukFis → ADWKAROLINA_Magazyn_dbo_slwDrukFis
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [42] dbo.slwDzialyTw → ADWKAROLINA_Magazyn_dbo_slwDzialyTw
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [43] dbo.slwFlagiTw → ADWKAROLINA_Magazyn_dbo_slwFlagiTw
+    Rekordów: 3
+    ✓ Wstawiono 3 rekordów       
+
+  [44] dbo.slwFormyPlatnosci → ADWKAROLINA_Magazyn_dbo_slwFormyPlatnosci
+    Rekordów: 16
+    ✓ Wstawiono 16 rekordów       
+
+  [45] dbo.slwGrupyKh → ADWKAROLINA_Magazyn_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [46] dbo.slwGrupyTw → ADWKAROLINA_Magazyn_dbo_slwGrupyTw
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [47] dbo.slwJM → ADWKAROLINA_Magazyn_dbo_slwJM
+    Rekordów: 18
+    ✓ Wstawiono 18 rekordów       
+
+  [48] dbo.slwMagazyny → ADWKAROLINA_Magazyn_dbo_slwMagazyny
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [49] dbo.slwNotes → ADWKAROLINA_Magazyn_dbo_slwNotes
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [50] dbo.slwOdsetkiKarne → ADWKAROLINA_Magazyn_dbo_slwOdsetkiKarne
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [51] dbo.slwRabaty → ADWKAROLINA_Magazyn_dbo_slwRabaty
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [52] dbo.slwSrodkiTransportu → ADWKAROLINA_Magazyn_dbo_slwSrodkiTransportu
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [53] dbo.slwStawkiVAT → ADWKAROLINA_Magazyn_dbo_slwStawkiVAT
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [54] dbo.slwTOWARY → ADWKAROLINA_Magazyn_dbo_slwTOWARY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [55] dbo.slwTypyKodowKreskowych → ADWKAROLINA_Magazyn_dbo_slwTypyKodowKreskowych
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [56] dbo.slwZalaczniki → ADWKAROLINA_Magazyn_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [57] dbo.slwZamienniki → ADWKAROLINA_Magazyn_dbo_slwZamienniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [58] dbo.twCeny → ADWKAROLINA_Magazyn_dbo_twCeny
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [59] dbo.twFlagi → ADWKAROLINA_Magazyn_dbo_twFlagi
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [60] dbo.twJM → ADWKAROLINA_Magazyn_dbo_twJM
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [61] dbo.twKody → ADWKAROLINA_Magazyn_dbo_twKody
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [62] dbo.twKomplet → ADWKAROLINA_Magazyn_dbo_twKomplet
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [63] dbo.twRodzaj → ADWKAROLINA_Magazyn_dbo_twRodzaj
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+================================================================================
+Baza: ADWRyszardWieckow_firma
+================================================================================
+Tabel do eksportu: 16
+
+  [64] dbo.ADRESY → ADWRyszardWieckow_firma_dbo_ADRESY
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [65] dbo.Deklaracje → ADWRyszardWieckow_firma_dbo_Deklaracje
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [66] dbo.DESCRIPTION → ADWRyszardWieckow_firma_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [67] dbo.FIRMA → ADWRyszardWieckow_firma_dbo_FIRMA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [68] dbo.FIRMAKONTA → ADWRyszardWieckow_firma_dbo_FIRMAKONTA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [69] dbo.IMAGES → ADWRyszardWieckow_firma_dbo_IMAGES
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [70] dbo.KASY → ADWRyszardWieckow_firma_dbo_KASY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [71] dbo.KONTA → ADWRyszardWieckow_firma_dbo_KONTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [72] dbo.slwGrupyKh → ADWRyszardWieckow_firma_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [73] dbo.SlwKONTRAHENT → ADWRyszardWieckow_firma_dbo_SlwKONTRAHENT
+    Rekordów: 32
+    ✓ Wstawiono 32 rekordów       
+
+  [74] dbo.slwRodoOdbiorcy → ADWRyszardWieckow_firma_dbo_slwRodoOdbiorcy
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [75] dbo.slwWaluta → ADWRyszardWieckow_firma_dbo_slwWaluta
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [76] dbo.slwWalutaKurs → ADWRyszardWieckow_firma_dbo_slwWalutaKurs
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [77] dbo.slwWalutaTabela → ADWRyszardWieckow_firma_dbo_slwWalutaTabela
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [78] dbo.slwZalaczniki → ADWRyszardWieckow_firma_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [79] dbo.WSPOLNICY → ADWRyszardWieckow_firma_dbo_WSPOLNICY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+================================================================================
+Baza: ADWRyszardWieckow_Magazyn
+================================================================================
+Tabel do eksportu: 47
+
+  [80] dbo.dbUpdate → ADWRyszardWieckow_Magazyn_dbo_dbUpdate
+    Rekordów: 6
+    ✓ Wstawiono 6 rekordów       
+
+  [81] dbo.DESCRIPTION → ADWRyszardWieckow_Magazyn_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [82] dbo.DICT_PLATNOSCI_TYPY → ADWRyszardWieckow_Magazyn_dbo_DICT_PLATNOSCI_TYPY
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [83] dbo.DICT_RODZAJ_TRANSAKCJI → ADWRyszardWieckow_Magazyn_dbo_DICT_RODZAJ_TRANSAKCJI
+    Rekordów: 11
+    ✓ Wstawiono 11 rekordów       
+
+  [84] dbo.dokDEF → ADWRyszardWieckow_Magazyn_dbo_dokDEF
+    Rekordów: 47
+    ✓ Wstawiono 47 rekordów       
+
+  [85] dbo.dokLINK → ADWRyszardWieckow_Magazyn_dbo_dokLINK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [86] dbo.dokNOTA → ADWRyszardWieckow_Magazyn_dbo_dokNOTA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [87] dbo.dokNUMERY → ADWRyszardWieckow_Magazyn_dbo_dokNUMERY
+    Rekordów: 27
+    ✓ Wstawiono 27 rekordów       
+
+  [88] dbo.dokPLK → ADWRyszardWieckow_Magazyn_dbo_dokPLK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [89] dbo.dokTOW → ADWRyszardWieckow_Magazyn_dbo_dokTOW
+    Rekordów: 400
+    ✓ Wstawiono 400 rekordów       
+
+  [90] dbo.dokVAT → ADWRyszardWieckow_Magazyn_dbo_dokVAT
+    Rekordów: 798
+    ✓ Wstawiono 798 rekordów       
+
+  [91] dbo.KASY → ADWRyszardWieckow_Magazyn_dbo_KASY
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [92] dbo.KONFIGURACJA → ADWRyszardWieckow_Magazyn_dbo_KONFIGURACJA
+    Rekordów: 73
+    ✓ Wstawiono 73 rekordów       
+
+  [93] dbo.lstDokArk → ADWRyszardWieckow_Magazyn_dbo_lstDokArk
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [94] dbo.lstDokInw → ADWRyszardWieckow_Magazyn_dbo_lstDokInw
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [95] dbo.lstDokTOW → ADWRyszardWieckow_Magazyn_dbo_lstDokTOW
+    Rekordów: 554
+    ✓ Wstawiono 554 rekordów       
+
+  [96] dbo.lstNotes → ADWRyszardWieckow_Magazyn_dbo_lstNotes
+    Rekordów: 17
+    ✓ Wstawiono 17 rekordów       
+
+  [97] dbo.lstOdsetki → ADWRyszardWieckow_Magazyn_dbo_lstOdsetki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [98] dbo.magRUCH → ADWRyszardWieckow_Magazyn_dbo_magRUCH
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [99] dbo.PLATNOSCI → ADWRyszardWieckow_Magazyn_dbo_PLATNOSCI
+    Rekordów: 94
+    ✓ Wstawiono 94 rekordów       
+
+  [100] dbo.PLATNOSCI_DOKUMENTY → ADWRyszardWieckow_Magazyn_dbo_PLATNOSCI_DOKUMENTY
+    Rekordów: 94
+    ✓ Wstawiono 94 rekordów       
+
+  [101] dbo.progver → ADWRyszardWieckow_Magazyn_dbo_progver
+    Rekordów: 6
+    ✓ Wstawiono 6 rekordów       
+
+  [102] dbo.slwCennik → ADWRyszardWieckow_Magazyn_dbo_slwCennik
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [103] dbo.slwDok_Kategorie → ADWRyszardWieckow_Magazyn_dbo_slwDok_Kategorie
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [104] dbo.slwDrukFis → ADWRyszardWieckow_Magazyn_dbo_slwDrukFis
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [105] dbo.slwDzialyTw → ADWRyszardWieckow_Magazyn_dbo_slwDzialyTw
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [106] dbo.slwFlagiTw → ADWRyszardWieckow_Magazyn_dbo_slwFlagiTw
+    Rekordów: 3
+    ✓ Wstawiono 3 rekordów       
+
+  [107] dbo.slwFormyPlatnosci → ADWRyszardWieckow_Magazyn_dbo_slwFormyPlatnosci
+    Rekordów: 16
+    ✓ Wstawiono 16 rekordów       
+
+  [108] dbo.slwGrupyKh → ADWRyszardWieckow_Magazyn_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [109] dbo.slwGrupyTw → ADWRyszardWieckow_Magazyn_dbo_slwGrupyTw
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [110] dbo.slwJM → ADWRyszardWieckow_Magazyn_dbo_slwJM
+    Rekordów: 18
+    ✓ Wstawiono 18 rekordów       
+
+  [111] dbo.slwMagazyny → ADWRyszardWieckow_Magazyn_dbo_slwMagazyny
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [112] dbo.slwNotes → ADWRyszardWieckow_Magazyn_dbo_slwNotes
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [113] dbo.slwOdsetkiKarne → ADWRyszardWieckow_Magazyn_dbo_slwOdsetkiKarne
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [114] dbo.slwRabaty → ADWRyszardWieckow_Magazyn_dbo_slwRabaty
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [115] dbo.slwSrodkiTransportu → ADWRyszardWieckow_Magazyn_dbo_slwSrodkiTransportu
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [116] dbo.slwStawkiVAT → ADWRyszardWieckow_Magazyn_dbo_slwStawkiVAT
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [117] dbo.slwTOWARY → ADWRyszardWieckow_Magazyn_dbo_slwTOWARY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [118] dbo.slwTypyKodowKreskowych → ADWRyszardWieckow_Magazyn_dbo_slwTypyKodowKreskowych
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [119] dbo.slwZalaczniki → ADWRyszardWieckow_Magazyn_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [120] dbo.slwZamienniki → ADWRyszardWieckow_Magazyn_dbo_slwZamienniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [121] dbo.twCeny → ADWRyszardWieckow_Magazyn_dbo_twCeny
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [122] dbo.twFlagi → ADWRyszardWieckow_Magazyn_dbo_twFlagi
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [123] dbo.twJM → ADWRyszardWieckow_Magazyn_dbo_twJM
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [124] dbo.twKody → ADWRyszardWieckow_Magazyn_dbo_twKody
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [125] dbo.twKomplet → ADWRyszardWieckow_Magazyn_dbo_twKomplet
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [126] dbo.twRodzaj → ADWRyszardWieckow_Magazyn_dbo_twRodzaj
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+================================================================================
+Baza: Karolina_firma
+================================================================================
+Tabel do eksportu: 16
+
+  [127] dbo.ADRESY → Karolina_firma_dbo_ADRESY
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [128] dbo.Deklaracje → Karolina_firma_dbo_Deklaracje
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [129] dbo.DESCRIPTION → Karolina_firma_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [130] dbo.FIRMA → Karolina_firma_dbo_FIRMA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [131] dbo.FIRMAKONTA → Karolina_firma_dbo_FIRMAKONTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [132] dbo.IMAGES → Karolina_firma_dbo_IMAGES
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [133] dbo.KASY → Karolina_firma_dbo_KASY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [134] dbo.KONTA → Karolina_firma_dbo_KONTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [135] dbo.slwGrupyKh → Karolina_firma_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [136] dbo.SlwKONTRAHENT → Karolina_firma_dbo_SlwKONTRAHENT
+    Rekordów: 3
+    ✓ Wstawiono 3 rekordów       
+
+  [137] dbo.slwRodoOdbiorcy → Karolina_firma_dbo_slwRodoOdbiorcy
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [138] dbo.slwWaluta → Karolina_firma_dbo_slwWaluta
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [139] dbo.slwWalutaKurs → Karolina_firma_dbo_slwWalutaKurs
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [140] dbo.slwWalutaTabela → Karolina_firma_dbo_slwWalutaTabela
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [141] dbo.slwZalaczniki → Karolina_firma_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [142] dbo.WSPOLNICY → Karolina_firma_dbo_WSPOLNICY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+================================================================================
+Baza: Karolina_Magazyn
+================================================================================
+Tabel do eksportu: 47
+
+  [143] dbo.dbUpdate → Karolina_Magazyn_dbo_dbUpdate
+    Rekordów: 3
+    ✓ Wstawiono 3 rekordów       
+
+  [144] dbo.DESCRIPTION → Karolina_Magazyn_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [145] dbo.DICT_PLATNOSCI_TYPY → Karolina_Magazyn_dbo_DICT_PLATNOSCI_TYPY
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [146] dbo.DICT_RODZAJ_TRANSAKCJI → Karolina_Magazyn_dbo_DICT_RODZAJ_TRANSAKCJI
+    Rekordów: 11
+    ✓ Wstawiono 11 rekordów       
+
+  [147] dbo.dokDEF → Karolina_Magazyn_dbo_dokDEF
+    Rekordów: 47
+    ✓ Wstawiono 47 rekordów       
+
+  [148] dbo.dokLINK → Karolina_Magazyn_dbo_dokLINK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [149] dbo.dokNOTA → Karolina_Magazyn_dbo_dokNOTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [150] dbo.dokNUMERY → Karolina_Magazyn_dbo_dokNUMERY
+    Rekordów: 8
+    ✓ Wstawiono 8 rekordów       
+
+  [151] dbo.dokPLK → Karolina_Magazyn_dbo_dokPLK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [152] dbo.dokTOW → Karolina_Magazyn_dbo_dokTOW
+    Rekordów: 62
+    ✓ Wstawiono 62 rekordów       
+
+  [153] dbo.dokVAT → Karolina_Magazyn_dbo_dokVAT
+    Rekordów: 124
+    ✓ Wstawiono 124 rekordów       
+
+  [154] dbo.KASY → Karolina_Magazyn_dbo_KASY
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [155] dbo.KONFIGURACJA → Karolina_Magazyn_dbo_KONFIGURACJA
+    Rekordów: 73
+    ✓ Wstawiono 73 rekordów       
+
+  [156] dbo.lstDokArk → Karolina_Magazyn_dbo_lstDokArk
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [157] dbo.lstDokInw → Karolina_Magazyn_dbo_lstDokInw
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [158] dbo.lstDokTOW → Karolina_Magazyn_dbo_lstDokTOW
+    Rekordów: 62
+    ✓ Wstawiono 62 rekordów       
+
+  [159] dbo.lstNotes → Karolina_Magazyn_dbo_lstNotes
+    Rekordów: 45
+    ✓ Wstawiono 45 rekordów       
+
+  [160] dbo.lstOdsetki → Karolina_Magazyn_dbo_lstOdsetki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [161] dbo.magRUCH → Karolina_Magazyn_dbo_magRUCH
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [162] dbo.PLATNOSCI → Karolina_Magazyn_dbo_PLATNOSCI
+    Rekordów: 14
+    ✓ Wstawiono 14 rekordów       
+
+  [163] dbo.PLATNOSCI_DOKUMENTY → Karolina_Magazyn_dbo_PLATNOSCI_DOKUMENTY
+    Rekordów: 14
+    ✓ Wstawiono 14 rekordów       
+
+  [164] dbo.progver → Karolina_Magazyn_dbo_progver
+    Rekordów: 6
+    ✓ Wstawiono 6 rekordów       
+
+  [165] dbo.slwCennik → Karolina_Magazyn_dbo_slwCennik
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [166] dbo.slwDok_Kategorie → Karolina_Magazyn_dbo_slwDok_Kategorie
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [167] dbo.slwDrukFis → Karolina_Magazyn_dbo_slwDrukFis
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [168] dbo.slwDzialyTw → Karolina_Magazyn_dbo_slwDzialyTw
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [169] dbo.slwFlagiTw → Karolina_Magazyn_dbo_slwFlagiTw
+    Rekordów: 3
+    ✓ Wstawiono 3 rekordów       
+
+  [170] dbo.slwFormyPlatnosci → Karolina_Magazyn_dbo_slwFormyPlatnosci
+    Rekordów: 16
+    ✓ Wstawiono 16 rekordów       
+
+  [171] dbo.slwGrupyKh → Karolina_Magazyn_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [172] dbo.slwGrupyTw → Karolina_Magazyn_dbo_slwGrupyTw
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [173] dbo.slwJM → Karolina_Magazyn_dbo_slwJM
+    Rekordów: 18
+    ✓ Wstawiono 18 rekordów       
+
+  [174] dbo.slwMagazyny → Karolina_Magazyn_dbo_slwMagazyny
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [175] dbo.slwNotes → Karolina_Magazyn_dbo_slwNotes
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [176] dbo.slwOdsetkiKarne → Karolina_Magazyn_dbo_slwOdsetkiKarne
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [177] dbo.slwRabaty → Karolina_Magazyn_dbo_slwRabaty
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [178] dbo.slwSrodkiTransportu → Karolina_Magazyn_dbo_slwSrodkiTransportu
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [179] dbo.slwStawkiVAT → Karolina_Magazyn_dbo_slwStawkiVAT
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [180] dbo.slwTOWARY → Karolina_Magazyn_dbo_slwTOWARY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [181] dbo.slwTypyKodowKreskowych → Karolina_Magazyn_dbo_slwTypyKodowKreskowych
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [182] dbo.slwZalaczniki → Karolina_Magazyn_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [183] dbo.slwZamienniki → Karolina_Magazyn_dbo_slwZamienniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [184] dbo.twCeny → Karolina_Magazyn_dbo_twCeny
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [185] dbo.twFlagi → Karolina_Magazyn_dbo_twFlagi
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [186] dbo.twJM → Karolina_Magazyn_dbo_twJM
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [187] dbo.twKody → Karolina_Magazyn_dbo_twKody
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [188] dbo.twKomplet → Karolina_Magazyn_dbo_twKomplet
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [189] dbo.twRodzaj → Karolina_Magazyn_dbo_twRodzaj
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+================================================================================
+Baza: Ryszard_firma
+================================================================================
+Tabel do eksportu: 16
+
+  [190] dbo.ADRESY → Ryszard_firma_dbo_ADRESY
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [191] dbo.Deklaracje → Ryszard_firma_dbo_Deklaracje
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [192] dbo.DESCRIPTION → Ryszard_firma_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [193] dbo.FIRMA → Ryszard_firma_dbo_FIRMA
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [194] dbo.FIRMAKONTA → Ryszard_firma_dbo_FIRMAKONTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [195] dbo.IMAGES → Ryszard_firma_dbo_IMAGES
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [196] dbo.KASY → Ryszard_firma_dbo_KASY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [197] dbo.KONTA → Ryszard_firma_dbo_KONTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [198] dbo.slwGrupyKh → Ryszard_firma_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [199] dbo.SlwKONTRAHENT → Ryszard_firma_dbo_SlwKONTRAHENT
+    Rekordów: 49
+    ✓ Wstawiono 49 rekordów       
+
+  [200] dbo.slwRodoOdbiorcy → Ryszard_firma_dbo_slwRodoOdbiorcy
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [201] dbo.slwWaluta → Ryszard_firma_dbo_slwWaluta
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [202] dbo.slwWalutaKurs → Ryszard_firma_dbo_slwWalutaKurs
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [203] dbo.slwWalutaTabela → Ryszard_firma_dbo_slwWalutaTabela
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [204] dbo.slwZalaczniki → Ryszard_firma_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [205] dbo.WSPOLNICY → Ryszard_firma_dbo_WSPOLNICY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+================================================================================
+Baza: Ryszard_Magazyn
+================================================================================
+Tabel do eksportu: 47
+
+  [206] dbo.dbUpdate → Ryszard_Magazyn_dbo_dbUpdate
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [207] dbo.DESCRIPTION → Ryszard_Magazyn_dbo_DESCRIPTION
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [208] dbo.DICT_PLATNOSCI_TYPY → Ryszard_Magazyn_dbo_DICT_PLATNOSCI_TYPY
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [209] dbo.DICT_RODZAJ_TRANSAKCJI → Ryszard_Magazyn_dbo_DICT_RODZAJ_TRANSAKCJI
+    Rekordów: 11
+    ✓ Wstawiono 11 rekordów       
+
+  [210] dbo.dokDEF → Ryszard_Magazyn_dbo_dokDEF
+    Rekordów: 47
+    ✓ Wstawiono 47 rekordów       
+
+  [211] dbo.dokLINK → Ryszard_Magazyn_dbo_dokLINK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [212] dbo.dokNOTA → Ryszard_Magazyn_dbo_dokNOTA
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [213] dbo.dokNUMERY → Ryszard_Magazyn_dbo_dokNUMERY
+    Rekordów: 14
+    ✓ Wstawiono 14 rekordów       
+
+  [214] dbo.dokPLK → Ryszard_Magazyn_dbo_dokPLK
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [215] dbo.dokTOW → Ryszard_Magazyn_dbo_dokTOW
+    Rekordów: 551
+    ✓ Wstawiono 551 rekordów       
+
+  [216] dbo.dokVAT → Ryszard_Magazyn_dbo_dokVAT
+    Rekordów: 1,102
+    Wstawiono 1,000 / 1,102 rekordów...    ✓ Wstawiono 1,102 rekordów       
+
+  [217] dbo.KASY → Ryszard_Magazyn_dbo_KASY
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [218] dbo.KONFIGURACJA → Ryszard_Magazyn_dbo_KONFIGURACJA
+    Rekordów: 73
+    ✓ Wstawiono 73 rekordów       
+
+  [219] dbo.lstDokArk → Ryszard_Magazyn_dbo_lstDokArk
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [220] dbo.lstDokInw → Ryszard_Magazyn_dbo_lstDokInw
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [221] dbo.lstDokTOW → Ryszard_Magazyn_dbo_lstDokTOW
+    Rekordów: 602
+    ✓ Wstawiono 602 rekordów       
+
+  [222] dbo.lstNotes → Ryszard_Magazyn_dbo_lstNotes
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [223] dbo.lstOdsetki → Ryszard_Magazyn_dbo_lstOdsetki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [224] dbo.magRUCH → Ryszard_Magazyn_dbo_magRUCH
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [225] dbo.PLATNOSCI → Ryszard_Magazyn_dbo_PLATNOSCI
+    Rekordów: 538
+    ✓ Wstawiono 538 rekordów       
+
+  [226] dbo.PLATNOSCI_DOKUMENTY → Ryszard_Magazyn_dbo_PLATNOSCI_DOKUMENTY
+    Rekordów: 538
+    ✓ Wstawiono 538 rekordów       
+
+  [227] dbo.progver → Ryszard_Magazyn_dbo_progver
+    Rekordów: 6
+    ✓ Wstawiono 6 rekordów       
+
+  [228] dbo.slwCennik → Ryszard_Magazyn_dbo_slwCennik
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [229] dbo.slwDok_Kategorie → Ryszard_Magazyn_dbo_slwDok_Kategorie
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [230] dbo.slwDrukFis → Ryszard_Magazyn_dbo_slwDrukFis
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [231] dbo.slwDzialyTw → Ryszard_Magazyn_dbo_slwDzialyTw
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [232] dbo.slwFlagiTw → Ryszard_Magazyn_dbo_slwFlagiTw
+    Rekordów: 3
+    ✓ Wstawiono 3 rekordów       
+
+  [233] dbo.slwFormyPlatnosci → Ryszard_Magazyn_dbo_slwFormyPlatnosci
+    Rekordów: 16
+    ✓ Wstawiono 16 rekordów       
+
+  [234] dbo.slwGrupyKh → Ryszard_Magazyn_dbo_slwGrupyKh
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [235] dbo.slwGrupyTw → Ryszard_Magazyn_dbo_slwGrupyTw
+    Rekordów: 5
+    ✓ Wstawiono 5 rekordów       
+
+  [236] dbo.slwJM → Ryszard_Magazyn_dbo_slwJM
+    Rekordów: 18
+    ✓ Wstawiono 18 rekordów       
+
+  [237] dbo.slwMagazyny → Ryszard_Magazyn_dbo_slwMagazyny
+    Rekordów: 1
+    ✓ Wstawiono 1 rekordów       
+
+  [238] dbo.slwNotes → Ryszard_Magazyn_dbo_slwNotes
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [239] dbo.slwOdsetkiKarne → Ryszard_Magazyn_dbo_slwOdsetkiKarne
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [240] dbo.slwRabaty → Ryszard_Magazyn_dbo_slwRabaty
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [241] dbo.slwSrodkiTransportu → Ryszard_Magazyn_dbo_slwSrodkiTransportu
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+  [242] dbo.slwStawkiVAT → Ryszard_Magazyn_dbo_slwStawkiVAT
+    Rekordów: 15
+    ✓ Wstawiono 15 rekordów       
+
+  [243] dbo.slwTOWARY → Ryszard_Magazyn_dbo_slwTOWARY
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [244] dbo.slwTypyKodowKreskowych → Ryszard_Magazyn_dbo_slwTypyKodowKreskowych
+    Rekordów: 2
+    ✓ Wstawiono 2 rekordów       
+
+  [245] dbo.slwZalaczniki → Ryszard_Magazyn_dbo_slwZalaczniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [246] dbo.slwZamienniki → Ryszard_Magazyn_dbo_slwZamienniki
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [247] dbo.twCeny → Ryszard_Magazyn_dbo_twCeny
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [248] dbo.twFlagi → Ryszard_Magazyn_dbo_twFlagi
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [249] dbo.twJM → Ryszard_Magazyn_dbo_twJM
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [250] dbo.twKody → Ryszard_Magazyn_dbo_twKody
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [251] dbo.twKomplet → Ryszard_Magazyn_dbo_twKomplet
+    Rekordów: 0
+    Pusta tabela, pomijam
+
+  [252] dbo.twRodzaj → Ryszard_Magazyn_dbo_twRodzaj
+    Rekordów: 4
+    ✓ Wstawiono 4 rekordów       
+
+================================================================================
+Tworzenie tabeli metadanych...
+
+================================================================================
+PODSUMOWANIE EKSPORTU
+================================================================================
+Przeanalizowano baz: 8
+Tabele pomyślnie wyeksportowane: 147 / 252
+Łączna liczba rekordów: 7,495
+Plik SQLite: dane_archiwalne.db
+Rozmiar pliku: 1.43 MB
+
+✓ Eksport zakończony!
