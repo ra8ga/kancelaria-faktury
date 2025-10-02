@@ -13,6 +13,7 @@ import type { InvoiceData } from '@/lib/types/invoice';
 import { formatIbanPL } from '@/lib/validation/nrb';
 import { formatNip } from '@/lib/validation/nip';
 import { formatPostalPL, isValidPostalPL } from '@/lib/validation/postal';
+import { isValidStreetNumber, formatStreetNumber } from '@/lib/validation/address';
 
 const itemSchema = z.object({
   name: z.string().min(1, 'Nazwa pozycji jest wymagana'),
@@ -26,11 +27,11 @@ const schema = z.object({
   invoiceNumber: z.string().regex(/^FV\/\d{4}\/\d{2}\/\d{3}$/, 'Format numeru: FV/RRRR/MM/nnn'),
   sellerName: z.string().min(1, 'Nazwa sprzedawcy jest wymagana'),
   sellerNip: z.string().refine((v) => isValidNIP(v), 'Nieprawidłowy NIP'),
-  sellerAddress: z.string().optional(),
+  sellerAddress: z.string().optional().refine((v) => !v || isValidStreetNumber(v), 'Nieprawidłowy adres (Ulica i numer)'),
   sellerPostal: z.string().optional().refine((v) => !v || isValidPostalPL(v), 'Nieprawidłowy kod pocztowy (NN-NNN)'),
   buyerName: z.string().min(1, 'Nazwa nabywcy jest wymagana'),
   buyerNip: z.string().refine((v) => isValidNIP(v), 'Nieprawidłowy NIP'),
-  buyerAddress: z.string().optional(),
+  buyerAddress: z.string().optional().refine((v) => !v || isValidStreetNumber(v), 'Nieprawidłowy adres (Ulica i numer)'),
   buyerPostal: z.string().optional().refine((v) => !v || isValidPostalPL(v), 'Nieprawidłowy kod pocztowy (NN-NNN)'),
   items: z.array(itemSchema).min(1, 'Dodaj co najmniej jedną pozycję'),
   mpp: z.boolean().optional(),
@@ -102,6 +103,7 @@ export default function InvoiceForm() {
     return summary;
   }, [items]);
 
+  const router = useRouter();
   const onSubmit = (data: z.infer<typeof schema>) => {
     const invoiceData: InvoiceData = {
       number: data.invoiceNumber,
@@ -112,7 +114,7 @@ export default function InvoiceForm() {
         quantity: it.quantity,
         unit: it.unit,
         unitPriceNet: it.unitPriceNet,
-        vatRate: it.vatRate as any,
+        vatRate: it.vatRate as 23 | 8 | 5 | 0 | 'ZW' | 'NP',
       })),
       issueDate: new Date().toISOString(),
       mpp: !!data.mpp,
@@ -120,7 +122,6 @@ export default function InvoiceForm() {
     };
 
     try {
-      // persist invoice and include seller bank from settings if available
       const rawSeller = localStorage.getItem('sellerSettings');
       let sellerBank: string | undefined;
       if (rawSeller) {
@@ -129,9 +130,22 @@ export default function InvoiceForm() {
       }
       const withBank = sellerBank ? { ...invoiceData, seller: { ...invoiceData.seller, bankAccount: sellerBank } } : invoiceData;
       localStorage.setItem(`invoice:${invoiceData.number}`, JSON.stringify(withBank));
+
+      // Zapis historii adresów (autouzupełnianie)
+      const toAdd: string[] = [];
+      if (data.sellerAddress) toAdd.push(formatStreetNumber(data.sellerAddress));
+      if (data.buyerAddress) toAdd.push(formatStreetNumber(data.buyerAddress));
+      if (toAdd.length > 0) {
+        const rawHist = localStorage.getItem('addressHistory');
+        const hist = rawHist ? (JSON.parse(rawHist) as string[]) : [];
+        let next = hist.slice();
+        toAdd.forEach((addr) => {
+          next = [addr, ...next.filter((h) => h !== addr)];
+        });
+        localStorage.setItem('addressHistory', JSON.stringify(next.slice(0, 10)));
+      }
     } catch {}
 
-    const router = useRouter();
     router.push(`/invoices/${encodeURIComponent(invoiceData.number)}`);
   };
 
@@ -167,9 +181,23 @@ export default function InvoiceForm() {
           )}
         </label>
         <label className="grid gap-1">
-          <span className="text-sm font-medium">Adres</span>
-          <textarea className="border p-2 rounded" rows={2} placeholder="Ulica i miejscowość" {...register('sellerAddress')} />
+          <span className="text-sm font-medium">Ulica i numer</span>
+          <input list="addressList" className="border p-2 rounded" placeholder="np. Dąbrowskiego 12" {...register('sellerAddress', {
+            setValueAs: (v) => formatStreetNumber(v || ''),
+          })} />
+          {formState.errors.sellerAddress && (
+            <div className="text-red-600 text-xs">{formState.errors.sellerAddress.message as string}</div>
+          )}
         </label>
+        <datalist id="addressList">
+          {(typeof window !== 'undefined') && (() => {
+            try {
+              const rawHist = localStorage.getItem('addressHistory');
+              const hist = rawHist ? (JSON.parse(rawHist) as string[]) : [];
+              return hist.map((h, i) => <option key={i} value={h} />);
+            } catch { return null; }
+          })()}
+        </datalist>
         <label className="grid gap-1">
           <span className="text-sm font-medium">Kod pocztowy (NN-NNN)</span>
           <input className="border p-2 rounded" placeholder="NN-NNN" {...register('sellerPostal', {
@@ -195,17 +223,14 @@ export default function InvoiceForm() {
             <div className="text-red-600 text-xs">{formState.errors.buyerNip.message as string}</div>
           )}
         </label>
+
         <label className="grid gap-1">
-          <span className="text-sm font-medium">Adres</span>
-          <textarea className="border p-2 rounded" rows={2} placeholder="Ulica i miejscowość" {...register('buyerAddress')} />
-        </label>
-        <label className="grid gap-1">
-          <span className="text-sm font-medium">Kod pocztowy (NN-NNN)</span>
-          <input className="border p-2 rounded" placeholder="NN-NNN" {...register('buyerPostal', {
-            setValueAs: (v) => formatPostalPL(v || ''),
+          <span className="text-sm font-medium">Ulica i numer</span>
+          <input list="addressList" className="border p-2 rounded" placeholder="np. Dąbrowskiego 12" {...register('buyerAddress', {
+            setValueAs: (v) => formatStreetNumber(v || ''),
           })} />
-          {formState.errors.buyerPostal && (
-            <div className="text-red-600 text-xs">{formState.errors.buyerPostal.message as string}</div>
+          {formState.errors.buyerAddress && (
+            <div className="text-red-600 text-xs">{formState.errors.buyerAddress.message as string}</div>
           )}
         </label>
       </fieldset>

@@ -58,11 +58,19 @@ export default function InvoiceDetailPage({ params }: Props) {
               const styles = StyleSheet.create({
                 page: { padding: 24, fontSize: 12 },
                 h1: { fontSize: 16, marginBottom: 12 },
-                section: { marginBottom: 10 },
-                row: { flexDirection: 'row', justifyContent: 'space-between' },
-                tableHeader: { flexDirection: 'row', borderBottomWidth: 1, paddingBottom: 4, marginTop: 8 },
-                cell: { width: '16%' },
-                cellWide: { width: '36%' },
+                meta: { marginBottom: 10 },
+                twoCol: { flexDirection: 'row', justifyContent: 'space-between', gap: 8 },
+                colBox: { width: '48%', borderWidth: 1, borderColor: '#000', padding: 8, borderRadius: 2 },
+                colTitle: { fontSize: 12, fontWeight: 700, marginBottom: 4 },
+                table: { marginTop: 10, borderWidth: 1, borderColor: '#000' },
+                tableHeader: { flexDirection: 'row', backgroundColor: '#eee', borderBottomWidth: 1, borderColor: '#000' },
+                thLarge: { flex: 3, padding: 6, fontWeight: 700, borderRightWidth: 1, borderColor: '#000' },
+                th: { flex: 1, padding: 6, fontWeight: 700, borderRightWidth: 1, borderColor: '#000' },
+                thLast: { flex: 1, padding: 6, fontWeight: 700 },
+                row: { flexDirection: 'row', borderBottomWidth: 1, borderColor: '#000' },
+                tdLarge: { flex: 3, padding: 6, borderRightWidth: 1, borderColor: '#000' },
+                td: { flex: 1, padding: 6, borderRightWidth: 1, borderColor: '#000' },
+                tdLast: { flex: 1, padding: 6 },
                 totals: { marginTop: 12 },
                 note: { marginTop: 10 }
               });
@@ -79,50 +87,55 @@ export default function InvoiceDetailPage({ params }: Props) {
                   <Page size="A4" style={styles.page}>
                     <Text style={styles.h1}>Faktura {invoice.number}</Text>
 
-                    <View style={styles.section}>
+                    <View style={styles.meta}>
                       <Text>Data wystawienia: {new Date(invoice.issueDate).toLocaleDateString('pl-PL')}</Text>
                     </View>
 
-                    <View style={styles.section}>
-                      <Text>Sprzedawca: {invoice.seller?.name} {invoice.seller?.nip ? `(NIP: ${invoice.seller.nip})` : ''}</Text>
-                      {invoice.seller?.address ? <Text>Adres: {invoice.seller.address}</Text> : null}
-                      {invoice.seller?.bankAccount ? <Text>Rachunek: {invoice.seller.bankAccount}</Text> : null}
+                    {/* Sprzedawca / Nabywca w dwóch kolumnach */}
+                    <View style={styles.twoCol}>
+                      <View style={styles.colBox}>
+                        <Text style={styles.colTitle}>Sprzedawca</Text>
+                        <Text>{invoice.seller?.name} {invoice.seller?.nip ? `(NIP: ${invoice.seller.nip})` : ''}</Text>
+                        {invoice.seller?.address ? <Text>Adres: {invoice.seller.address}</Text> : null}
+                        {invoice.seller?.bankAccount ? <Text>Rachunek: {invoice.seller.bankAccount}</Text> : null}
+                      </View>
+                      <View style={styles.colBox}>
+                        <Text style={styles.colTitle}>Nabywca</Text>
+                        <Text>{invoice.buyer?.name} {invoice.buyer?.nip ? `(NIP: ${invoice.buyer.nip})` : ''}</Text>
+                        {invoice.buyer?.address ? <Text>Adres: {invoice.buyer.address}</Text> : null}
+                      </View>
                     </View>
 
-                    <View style={styles.section}>
-                      <Text>Nabywca: {invoice.buyer?.name} {invoice.buyer?.nip ? `(NIP: ${invoice.buyer.nip})` : ''}</Text>
-                      {invoice.buyer?.address ? <Text>Adres: {invoice.buyer.address}</Text> : null}
-                    </View>
+                    {/* Tabela pozycji z obramowaniem */}
+                    <View style={styles.table}>
+                      <View style={styles.tableHeader}>
+                        <Text style={styles.thLarge}>Pozycja</Text>
+                        <Text style={styles.th}>Ilość</Text>
+                        <Text style={styles.th}>J.m.</Text>
+                        <Text style={styles.th}>Cena netto</Text>
+                        <Text style={styles.th}>Stawka VAT</Text>
+                        <Text style={styles.th}>Netto</Text>
+                        <Text style={styles.thLast}>Brutto</Text>
+                      </View>
 
-                    <View style={styles.tableHeader}>
-                      <Text style={styles.cellWide}>Pozycja</Text>
-                      <Text style={styles.cell}>Ilość</Text>
-                      <Text style={styles.cell}>J.m.</Text>
-                      <Text style={styles.cell}>Cena netto</Text>
-                      <Text style={styles.cell}>Stawka VAT</Text>
-                      <Text style={styles.cell}>Netto</Text>
-                      <Text style={styles.cell}>VAT</Text>
-                      <Text style={styles.cell}>Brutto</Text>
+                      {items.map((it, idx) => {
+                        const lineNet = round2((it.unitPriceNet || 0) * (it.quantity || 0));
+                        const lineVat = typeof it.vatRate === 'number' ? round2(lineNet * (Number(it.vatRate) / 100)) : 0;
+                        const lineGross = round2(lineNet + lineVat);
+                        const vatLabel = typeof it.vatRate === 'number' ? `${it.vatRate}%` : String(it.vatRate);
+                        return (
+                          <View key={idx} style={styles.row}>
+                            <Text style={styles.tdLarge}>{it.name}</Text>
+                            <Text style={styles.td}>{it.quantity}</Text>
+                            <Text style={styles.td}>{it.unit}</Text>
+                            <Text style={styles.td}>{formatPLN(it.unitPriceNet)}</Text>
+                            <Text style={styles.td}>{vatLabel}</Text>
+                            <Text style={styles.td}>{formatPLN(lineNet)}</Text>
+                            <Text style={styles.tdLast}>{formatPLN(lineGross)}</Text>
+                          </View>
+                        );
+                      })}
                     </View>
-
-                    {items.map((it, idx) => {
-                      const lineNet = round2((it.unitPriceNet || 0) * (it.quantity || 0));
-                      const lineVat = typeof it.vatRate === 'number' ? round2(lineNet * (Number(it.vatRate) / 100)) : 0;
-                      const lineGross = round2(lineNet + lineVat);
-                      const vatLabel = typeof it.vatRate === 'number' ? `${it.vatRate}%` : String(it.vatRate);
-                      return (
-                        <View key={idx} style={styles.row}>
-                          <Text style={styles.cellWide}>{it.name}</Text>
-                          <Text style={styles.cell}>{it.quantity}</Text>
-                          <Text style={styles.cell}>{it.unit}</Text>
-                          <Text style={styles.cell}>{formatPLN(it.unitPriceNet)}</Text>
-                          <Text style={styles.cell}>{vatLabel}</Text>
-                          <Text style={styles.cell}>{formatPLN(lineNet)}</Text>
-                          <Text style={styles.cell}>{formatPLN(lineVat)}</Text>
-                          <Text style={styles.cell}>{formatPLN(lineGross)}</Text>
-                        </View>
-                      );
-                    })}
 
                     <View style={styles.totals}>
                       <Text>Suma netto: {formatPLN(totalNet)}</Text>
@@ -149,7 +162,9 @@ export default function InvoiceDetailPage({ params }: Props) {
               a.click();
               a.remove();
               URL.revokeObjectURL(url);
-            } catch (e) {
+            // ... existing code ...
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (error) {
               alert('Nie udało się wygenerować PDF');
             }
           }}
