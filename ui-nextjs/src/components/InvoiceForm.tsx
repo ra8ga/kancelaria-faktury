@@ -59,6 +59,16 @@ export default function InvoiceForm() {
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
 
   const items = watch('items');
+
+  // Historia adresów dla datalist (CSR)
+  const [addressHist, setAddressHist] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const rawHist = localStorage.getItem('addressHistory');
+      const hist = rawHist ? (JSON.parse(rawHist) as string[]) : [];
+      setAddressHist(hist);
+    } catch {}
+  }, []);
   // Prefill seller from settings (localStorage)
   // Load once on mount and set values if available
   useEffect(() => {
