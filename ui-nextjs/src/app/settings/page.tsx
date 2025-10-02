@@ -1,10 +1,11 @@
-"use client";
+'use client';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isValidIbanPL, formatIbanPL } from '@/lib/validation/nrb';
 import { formatPostalPL, isValidPostalPL } from '@/lib/validation/postal';
 import { isValidStreetNumber, formatStreetNumber } from '@/lib/validation/address';
+import { useEffect, useState } from 'react';
 
 const schema = z.object({
   name: z.string().min(2, 'Nazwa sprzedawcy jest wymagana'),
@@ -19,14 +20,34 @@ type SellerSettings = z.infer<typeof schema>;
 export default function SettingsPage() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<SellerSettings>({
     resolver: zodResolver(schema),
-    defaultValues: (() => {
-      try {
-        const raw = localStorage.getItem('sellerSettings');
-        if (raw) return JSON.parse(raw) as SellerSettings;
-      } catch {}
-      return { name: '', nip: '', address: '', bankAccount: '', postal: '' };
-    })(),
+    defaultValues: { name: '', nip: '', address: '', bankAccount: '', postal: '' },
   });
+
+  // Load saved settings after mount to avoid SSR/CSR mismatch
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('sellerSettings');
+      if (raw) {
+        const s = JSON.parse(raw) as Partial<SellerSettings>;
+        reset({
+          name: s.name || '',
+          nip: s.nip || '',
+          address: s.address || '',
+          bankAccount: s.bankAccount || '',
+          postal: s.postal || '',
+        });
+      }
+    } catch {}
+  }, [reset]);
+
+  const [addressHist, setAddressHist] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const rawHist = localStorage.getItem('addressHistory');
+      const hist = rawHist ? (JSON.parse(rawHist) as string[]) : [];
+      setAddressHist(hist);
+    } catch {}
+  }, []);
 
   const onSubmit = (data: SellerSettings) => {
     try {
@@ -94,13 +115,7 @@ export default function SettingsPage() {
           {errors.address && <span className="text-red-600 text-xs">{errors.address.message as string}</span>}
         </label>
         <datalist id="addressList">
-          {(typeof window !== 'undefined') && (() => {
-            try {
-              const rawHist = localStorage.getItem('addressHistory');
-              const hist = rawHist ? (JSON.parse(rawHist) as string[]) : [];
-              return hist.map((h, i) => <option key={i} value={h} />);
-            } catch { return null; }
-          })()}
+          {addressHist.map((h, i) => <option key={i} value={h} />)}
         </datalist>
         <label className="grid gap-1">
           <span className="text-sm font-medium">Numer rachunku (NRB/IBAN)</span>

@@ -1,17 +1,31 @@
 "use client";
 import type { InvoiceData } from '@/lib/types/invoice';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { formatPLN } from '@/lib/format/currency';
 import { round2 } from '@/lib/format/round';
 
 interface Props { params: { id: string } }
 export default function InvoiceDetailPage({ params }: Props) {
   const id = params.id;
-  let invoice: InvoiceData | null = null;
-  try {
-    const raw = localStorage.getItem(`invoice:${id}`);
-    if (raw) invoice = JSON.parse(raw) as InvoiceData;
-  } catch {}
+  const [invoice, setInvoice] = useState<InvoiceData | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(`invoice:${id}`);
+      if (raw) setInvoice(JSON.parse(raw) as InvoiceData);
+    } catch {}
+    setLoaded(true);
+  }, [id]);
+
+  if (!loaded) {
+    return (
+      <main className="p-6 grid gap-4">
+        <h1 className="text-2xl font-semibold">Faktura #{id}</h1>
+        <div className="p-3 border rounded bg-gray-50 text-gray-700">Ładowanie danych faktury...</div>
+      </main>
+    );
+  }
 
   if (!invoice) {
     return (
@@ -23,7 +37,6 @@ export default function InvoiceDetailPage({ params }: Props) {
       </main>
     );
   }
-
   const showMPPNote = !!invoice.mpp;
 
   return (
@@ -162,7 +175,6 @@ export default function InvoiceDetailPage({ params }: Props) {
               a.click();
               a.remove();
               URL.revokeObjectURL(url);
-            // ... existing code ...
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
               alert('Nie udało się wygenerować PDF');

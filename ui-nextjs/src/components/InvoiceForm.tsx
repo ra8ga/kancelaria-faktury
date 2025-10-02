@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isValidNIP } from '@/lib/validation/nip';
 import { formatPLN } from '@/lib/format/currency';
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { round2 } from '@/lib/format/round';
 import { useFieldArray } from 'react-hook-form';
 import { nextInvoiceNumber } from '@/lib/numbering';
@@ -41,7 +41,7 @@ export default function InvoiceForm() {
   const { register, handleSubmit, formState, watch, control, setValue } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      invoiceNumber: defaultInvoiceNumber(),
+      invoiceNumber: '',
       sellerName: '',
       sellerNip: '',
       sellerAddress: '',
@@ -190,13 +190,7 @@ export default function InvoiceForm() {
           )}
         </label>
         <datalist id="addressList">
-          {(typeof window !== 'undefined') && (() => {
-            try {
-              const rawHist = localStorage.getItem('addressHistory');
-              const hist = rawHist ? (JSON.parse(rawHist) as string[]) : [];
-              return hist.map((h, i) => <option key={i} value={h} />);
-            } catch { return null; }
-          })()}
+          {addressHist.map((h: string, i: number) => <option key={i} value={h} />)}
         </datalist>
         <label className="grid gap-1">
           <span className="text-sm font-medium">Kod pocztowy (NN-NNN)</span>
