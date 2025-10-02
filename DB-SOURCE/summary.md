@@ -55,5 +55,13 @@ Rekomendacje użycia
 - Do analiz i raportów: użyj v3 (dashboard analityczny, eksport)
 - Do zapytań i integracji: korzystaj z `db-api/database_api.py`
 
+Migracja do Cloudflare D1
+- Baza danych pomyślnie przeniesiona do Cloudflare D1
+- 254 tabel, ~8,000 rekordów, 2.09 MB
+- Worker API gotowy do wdrożenia (wymaga rejestracji workers.dev)
+- Dostęp przez REST API: `/api/companies_summary`, `/health`
+- Szczegółowy status: `D1_MIGRATION_STATUS.md`
+
 Status
 - Projekt ukończony sukcesem (v1/v2); v3 — rozwinięty interfejs analityczny
+- Dodatkowo: migracja do chmury Cloudflare D1 zakończona

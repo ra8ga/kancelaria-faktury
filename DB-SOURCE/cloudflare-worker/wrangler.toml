@@ -2,8 +2,14 @@ name = "archiwum-worker"
 main = "src/index.js"
 compatibility_date = "2025-10-01"
 
+[env.production]
+name = "archiwum-api"
+
+# Route for existing domain (optional)
+# routes = ["example.com/api/*"]
+
 [[d1_databases]]
 binding = "ARCHIWUM_DB"
 database_name = "archiwum-danych"
 # Uzupełnij ID po utworzeniu bazy: `wrangler d1 create archiwum-danych`
-database_id = "REPLACE_WITH_ID"
+database_id = "b0db5c41-2ccc-48d4-ba3e-d37a017b13fd"
