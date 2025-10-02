@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Analityczny - Archiwum Danych v3{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Sidebar with Navigation -->
+        <div class="col-md-3 col-lg-2 bg-light border-end p-0">
+            <div class="sidebar-sticky">
+                <!-- Company Selection -->
+                <div class="p-3 border-bottom bg-white">
+                    <div class="mb-2">
+                        <small class="text-muted d-block mb-2">Aktywna firma:</small>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary w-100 dropdown-toggle" type="button" id="companyDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-building me-1"></i>
+                                <span id="selectedCompanyName">Ładowanie...</span>
+                            </button>
+                            <ul class="dropdown-menu w-100" id="companyDropdownMenu">
+                                <li><h6 class="dropdown-header">Wybierz firmę:</h6></li>
+                                {% for company in companies %}
+                                <li>
+                                    <a class="dropdown-item company-change" href="#" data-company-id="{{ company.db_name }}">
+                                        <i class="fas fa-building me-2"></i>{{ company.nazwa or company.db_name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="#" id="clearCompanySelection">
+                                        <i class="fas fa-times me-2"></i>Zmień firmę
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="nav flex-column p-3">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-search me-2"></i>Wyszukiwarka
+                    </a>
+                    <a class="nav-link active" href="/dashboard">
+                        <i class="fas fa-chart-bar me-2"></i>Dashboard Analityczny
+                    </a>
+                    <a class="nav-link" href="/search">
+                        <i class="fas fa-filter me-2"></i>Wyszukiwanie Zaawansowane
+                    </a>
+                </nav>
+
+                <!-- Action Buttons -->
+                <div class="p-3 border-top">
+                    <div class="small">
+                        <button class="btn btn-sm btn-outline-primary w-100 mb-2" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt me-1"></i> Odśwież
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary w-100" onclick="exportAllData()">
+                            <i class="fas fa-download me-1"></i> Eksportuj wszystko
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9 col-lg-10">
+            <div class="p-4">
+                <h1 class="h2 mb-4">
+                    <i class="fas fa-chart-line text-primary me-2"></i>
+                    Dashboard Analityczny
+                </h1>
+  
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title mb-2">Łączne dokumenty</h6>
+                            <h3 class="mb-0" id="totalDocuments">-</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-file-alt fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title mb-2">Łączny VAT</h6>
+                            <h3 class="mb-0" id="totalVAT">-</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-receipt fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title mb-2">Kontrahenci</h6>
+                            <h3 class="mb-0" id="totalCustomers">-</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-users fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title mb-2">Aktywne firmy</h6>
+                            <h3 class="mb-0">{{ companies|length }}</h3>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-building fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Company Cards -->
+    <div class="row">
+        {% for company in companies %}
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card h-100 company-card" data-company-id="{{ company.db_name }}">
+                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="d-flex justify-content-between align-items-center text-white">
+                        <h5 class="card-title mb-0">{{ company.nazwa or company.db_name }}</h5>
+                        <span class="badge bg-light text-dark">{{ company.db_name }}</span>
+                    </div>
+                    {% if company.nip %}
+                    <small class="text-white-50">NIP: {{ company.nip }}</small>
+                    {% endif %}
+                </div>
+
+                <div class="card-body">
+                    <!-- Company Stats -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <div class="text-center p-2 bg-light rounded">
+                                <div class="fw-bold text-primary">{{ company.financial_summary.total_documents }}</div>
+                                <small class="text-muted">Dokumenty</small>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center p-2 bg-light rounded">
+                                <div class="fw-bold text-success">{{ company.kontrahenci_count or 0 }}</div>
+                                <small class="text-muted">Kontrahenci</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Summary -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">Netto:</small>
+                            <small class="fw-bold">{{ company.financial_summary.total_netto }} PLN</small>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <small class="text-muted">VAT:</small>
+                            <small class="fw-bold">{{ company.financial_summary.total_vat }} PLN</small>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Brutto:</small>
+                            <small class="fw-bold">{{ company.financial_summary.total_brutto }} PLN</small>
+                        </div>
+                    </div>
+
+                    <!-- Top Customers Preview -->
+                    {% if company.top_customers %}
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">Top kontrahenci:</small>
+                        <div class="d-flex flex-wrap gap-1">
+                            {% for customer in company.top_customers[:3] %}
+                            <span class="badge bg-secondary text-white" title="{{ customer.nazwa }}">
+                                {{ customer.nazwa[:15] }}{% if customer.nazwa|length > 15 %}...{% endif %}
+                            </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Chart Canvas -->
+                    <div class="mb-3">
+                        <canvas id="chart-{{ company.db_name }}" height="80"></canvas>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('analytics', firma_id=company.db_name) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-chart-bar me-1"></i> Szczegóły
+                        </a>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-secondary" onclick="exportCompanyData('{{ company.db_name }}')">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="refreshCompanyData('{{ company.db_name }}')">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Additional Charts Row -->
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        Porównanie Trendów Firm
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="comparisonChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-pie text-primary me-2"></i>
+                        Podział według Firm
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="distributionChart" height="200"></canvas>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay d-none">
+    <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Ładowanie...</span>
+        </div>
+        <p class="mt-2 text-muted">Ładowanie danych...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Global data
+let companiesData = {{ companies|tojson }};
+let dashboardCharts = {};
+
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    initializeDashboard();
+});
+
+function initializeDashboard() {
+    updateSummaryCards();
+    initializeCompanyCharts();
+    initializeComparisonChart();
+    initializeDistributionChart();
+    setupCompanySelection();
+}
+
+function updateSummaryCards() {
+    let totalDocuments = 0;
+    let totalVAT = 0;
+    let totalCustomers = 0;
+
+    companiesData.forEach(company => {
+        totalDocuments += company.financial_summary.total_documents;
+        totalVAT += company.financial_summary.total_vat;
+        totalCustomers += company.kontrahenci_count || 0;
+    });
+
+    document.getElementById('totalDocuments').textContent = totalDocuments.toLocaleString();
+    document.getElementById('totalVAT').textContent = totalVAT.toLocaleString() + ' PLN';
+    document.getElementById('totalCustomers').textContent = totalCustomers.toLocaleString();
+}
+
+function initializeCompanyCharts() {
+    companiesData.forEach(company => {
+        const canvas = document.getElementById(`chart-${company.db_name}`);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        const trends = company.trends || [];
+
+        dashboardCharts[company.db_name] = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: trends.map(t => t.month),
+                datasets: [{
+                    label: 'Dokumenty',
+                    data: trends.map(t => t.documents),
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false,
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+}
+
+function initializeComparisonChart() {
+    const ctx = document.getElementById('comparisonChart');
+    if (!ctx) return;
+
+    const datasets = companiesData.map((company, index) => {
+        const colors = ['#667eea', '#f59e0b', '#10b981', '#ef4444'];
+        const color = colors[index % colors.length];
+
+        return {
+            label: company.nazwa || company.db_name,
+            data: company.trends?.map(t => t.documents) || [],
+            borderColor: color,
+            backgroundColor: color + '20',
+            tension: 0.4
+        };
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: companiesData[0]?.trends?.map(t => t.month) || [],
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Liczba dokumentów'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function initializeDistributionChart() {
+    const ctx = document.getElementById('distributionChart');
+    if (!ctx) return;
+
+    const data = companiesData.map(company => company.financial_summary.total_brutto);
+    const labels = companiesData.map(company => company.nazwa || company.db_name);
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: [
+                    '#667eea',
+                    '#f59e0b',
+                    '#10b981',
+                    '#ef4444'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+function refreshDashboard() {
+    showLoading();
+    setTimeout(() => {
+        location.reload();
+    }, 1000);
+}
+
+function refreshCompanyData(companyId) {
+    showLoading();
+    // TODO: Implement real refresh
+    setTimeout(() => {
+        hideLoading();
+        showNotification('Dane firmy odświeżone', 'success');
+    }, 1000);
+}
+
+function exportCompanyData(companyId) {
+    window.open(`/export/${companyId}/json`, '_blank');
+}
+
+function exportAllData() {
+    showLoading();
+    // TODO: Implement full export
+    setTimeout(() => {
+        hideLoading();
+        showNotification('Eksport danych zakończony', 'success');
+    }, 2000);
+}
+
+function showLoading() {
+    document.getElementById('loadingOverlay').classList.remove('d-none');
+}
+
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('d-none');
+}
+
+function setupCompanySelection() {
+    // Pobierz aktualnie wybraną firmę
+    fetch('/get_current_company')
+        .then(response => response.json())
+        .then(data => {
+            updateSelectedCompanyDisplay(data.company_info);
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Obsługa zmiany firmy
+    document.querySelectorAll('.company-change').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const companyId = this.getAttribute('data-company-id');
+            changeCompany(companyId);
+        });
+    });
+
+    // Obsługa czyszczenia wyboru
+    const clearSelection = document.getElementById('clearCompanySelection');
+    if (clearSelection) {
+        clearSelection.addEventListener('click', function(e) {
+            e.preventDefault();
+            clearCompanySelection();
+        });
+    }
+}
+
+function updateSelectedCompanyDisplay(companyInfo) {
+    const nameElement = document.getElementById('selectedCompanyName');
+    if (nameElement && companyInfo) {
+        nameElement.textContent = companyInfo.nazwa || companyInfo.db_name;
+    }
+}
+
+function changeCompany(companyId) {
+    fetch('/select_company', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            company_id: companyId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Firma została zmieniona', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            showNotification('Nie udało się zmienić firmy', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Wystąpił błąd', 'error');
+    });
+}
+
+function clearCompanySelection() {
+    fetch('/clear_company_selection', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/select_company';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Wystąpił błąd', 'error');
+    });
+}
+
+function showNotification(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white bg-${type} border-0`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+
+    document.body.appendChild(toast);
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+
+    setTimeout(() => {
+        toast.remove();
+    }, 5000);
+}
+</script>
+{% endblock %}

@@ -2,20 +2,17 @@
 """
 Prosty serwer Flask do przeglądania danych z SQLite
 """
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'db-api'))
+
 from flask import Flask, render_template_string, jsonify, request
-import sqlite3
 import json
 from datetime import datetime
+from database_api import create_database_api
 
 app = Flask(__name__)
-DB_FILE = 'dane_archiwalne.db'
-
-
-def get_db():
-    """Połącz z bazą SQLite"""
-    conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row
-    return conn
+api = create_database_api('../db-api/dane_archiwalne.db')
 
 
 def get_all_tables():

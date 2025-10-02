@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Wybierz firmę - Archiwum Danych v0{% endblock %}
+
+{% block content %}
+<div class="company-selector">
+    <div class="selector-header">
+        <h1>🏢 Archiwum Danych</h1>
+        <p>Wybierz firmę, aby przeglądać kontrahentów i dokumenty</p>
+    </div>
+
+    <div class="companies-grid">
+        {% for company in all_companies %}
+        <div class="company-card" onclick="selectCompany('{{ company.db_name }}')">
+            <i class="fas fa-building"></i>
+            <h3>{{ company.nazwa or company.db_name }}</h3>
+            <div class="company-nip">
+                {% if company.nip %}
+                NIP: {{ company.nip }}
+                {% else %}
+                Brak NIP
+                {% endif %}
+            </div>
+            <div class="company-stats">
+                Kontrahenci: {{ company.kontrahenci_count or 0 }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

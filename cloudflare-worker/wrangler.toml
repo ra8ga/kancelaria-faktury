@@ -1,0 +1,9 @@
+name = "archiwum-worker"
+main = "src/index.js"
+compatibility_date = "2025-10-01"
+
+[[d1_databases]]
+binding = "ARCHIWUM_DB"
+database_name = "archiwum-danych"
+# Uzupełnij ID po utworzeniu bazy: `wrangler d1 create archiwum-danych`
+database_id = "REPLACE_WITH_ID"

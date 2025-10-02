@@ -34,10 +34,21 @@ def get_companies():
         db_name = table.split('_firma_dbo_FIRMA')[0]
 
         # Pobierz dane firmy
-        cursor.execute(f"SELECT NAZWA, NIP, REGON, MIASTO, ULICA, KOD FROM [{table}] LIMIT 1")
+        cursor.execute(f"SELECT NAZWA, NIP, REGON FROM [{table}] LIMIT 1")
         firma = cursor.fetchone()
 
         if firma:
+            # Pobierz adres z tabeli ADRESY
+            addr_table = f"{db_name}_firma_dbo_ADRESY"
+            try:
+                cursor.execute(f"SELECT MIASTO, ULICA, KOD FROM [{addr_table}] LIMIT 1")
+                adres = cursor.fetchone()
+                miasto = adres[0] if adres else None
+                ulica = adres[1] if adres else None
+                kod = adres[2] if adres else None
+            except:
+                miasto, ulica, kod = None, None, None
+
             # Policz kontrahentów
             kontrahent_table = f"{db_name}_firma_dbo_SlwKONTRAHENT"
             cursor.execute(f"SELECT COUNT(*) FROM [{kontrahent_table}]")
@@ -56,9 +67,9 @@ def get_companies():
                 'nazwa': firma[0],
                 'nip': firma[1],
                 'regon': firma[2],
-                'miasto': firma[3],
-                'ulica': firma[4],
-                'kod': firma[5],
+                'miasto': miasto,
+                'ulica': ulica,
+                'kod': kod,
                 'kontrahenci': kontrahenci_count,
                 'dokumenty': dokumenty_count
             })

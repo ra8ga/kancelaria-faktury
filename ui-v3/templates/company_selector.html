@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Wybierz firmę - Archiwum Danych{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h1 class="display-5 fw-bold text-primary mb-3">Archiwum</h1>
+                        <p class="text-muted fs-5">Wybierz firmę, aby kontynuować</p>
+                    </div>
+
+                    {% if all_companies %}
+                        <div class="list-group">
+                            {% for company in all_companies %}
+                                <a href="#" class="company-select list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3 mb-2 border rounded-3" data-company-id="{{ company.db_name }}">
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">{{ company.nazwa or company.db_name }}</h6>
+                                        <small class="text-muted">NIP: {{ company.nip or 'brak' }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-primary rounded-pill">{{ company.kontrahenci_count }} kontrahentów</span>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning text-center">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Nie znaleziono żadnych firm w bazie danych
+                        </div>
+                    {% endif %}
+
+                    <div class="text-center mt-4">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Wybranie firmy zawęży widok danych do tej konkretnej organizacji
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center" style="background: rgba(255,255,255,0.9); z-index: 9999;">
+    <div class="text-center">
+        <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Ładowanie...</span>
+        </div>
+        <div class="text-muted">Przygotowywanie widoku...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupCompanySelection();
+});
+
+function setupCompanySelection() {
+    document.querySelectorAll('.company-select').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const companyId = this.getAttribute('data-company-id');
+
+            showLoading();
+
+            fetch('/select_company', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    company_id: companyId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Przekieruj do strony głównej
+                    window.location.href = '/';
+                } else {
+                    hideLoading();
+                    showNotification('Nie udało się wybrać firmy', 'error');
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                console.error('Error:', error);
+                showNotification('Wystąpił błąd', 'error');
+            });
+        });
+    });
+}
+
+function showLoading() {
+    document.getElementById('loadingOverlay').classList.remove('d-none');
+    document.getElementById('loadingOverlay').classList.add('d-flex');
+}
+
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('d-none');
+    document.getElementById('loadingOverlay').classList.remove('d-flex');
+}
+
+function showNotification(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'error' ? 'danger' : 'info'} position-fixed top-0 end-0 m-3`;
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'info-circle'} me-2"></i>
+        ${message}
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}

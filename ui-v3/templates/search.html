@@ -1,0 +1,778 @@
+{% extends "base.html" %}
+
+{% block title %}Wyszukiwanie Zaawansowane - Archiwum Danych v3{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Sidebar with Navigation -->
+        <div class="col-md-3 col-lg-2 bg-light border-end p-0">
+            <div class="sidebar-sticky">
+                <!-- Company Selection -->
+                <div class="p-3 border-bottom bg-white">
+                    <div class="mb-2">
+                        <small class="text-muted d-block mb-2">Aktywna firma:</small>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary w-100 dropdown-toggle" type="button" id="companyDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-building me-1"></i>
+                                <span id="selectedCompanyName">Ładowanie...</span>
+                            </button>
+                            <ul class="dropdown-menu w-100" id="companyDropdownMenu">
+                                <li><h6 class="dropdown-header">Wybierz firmę:</h6></li>
+                                {% for company in companies %}
+                                <li>
+                                    <a class="dropdown-item company-change" href="#" data-company-id="{{ company.db_name }}">
+                                        <i class="fas fa-building me-2"></i>{{ company.nazwa or company.db_name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="#" id="clearCompanySelection">
+                                        <i class="fas fa-times me-2"></i>Zmień firmę
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="nav flex-column p-3">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-search me-2"></i>Wyszukiwarka
+                    </a>
+                    <a class="nav-link" href="/dashboard">
+                        <i class="fas fa-chart-bar me-2"></i>Dashboard Analityczny
+                    </a>
+                    <a class="nav-link active" href="/search">
+                        <i class="fas fa-filter me-2"></i>Wyszukiwanie Zaawansowane
+                    </a>
+                </nav>
+
+                <!-- Quick Stats -->
+                <div class="p-3 border-top">
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Łączne dokumenty:</span>
+                            <strong>4,238</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Wszyscy kontrahenci:</span>
+                            <strong>1,842</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Aktywne firmy:</span>
+                            <strong>4</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9 col-lg-10">
+            <div class="p-4">
+                <h1 class="h2 mb-1">
+                    <i class="fas fa-search text-primary me-2"></i>
+                    Wyszukiwanie Zaawansowane
+                </h1>
+                <p class="text-muted mb-4">Przeszukaj wszystkie dane firmowe za pomocą zaawansowanych filtrów</p>
+
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-filter text-primary me-2"></i>
+                        Kryteria Wyszukiwania
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="advancedSearchForm" data-action="search">
+                        <div class="row g-3">
+                            <!-- Firms Selection -->
+                            <div class="col-md-6">
+                                <label class="form-label">Firmy</label>
+                                <div class="form-check-group">
+                                    {% for company in companies %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="firms"
+                                               value="{{ company.db_name }}" id="firm-{{ company.db_name }}" checked>
+                                        <label class="form-check-label" for="firm-{{ company.db_name }}">
+                                            {{ company.nazwa or company.db_name }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Date Range -->
+                            <div class="col-md-6">
+                                <label class="form-label">Zakres Dat</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" name="date_from"
+                                               placeholder="Od" id="dateFrom">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" name="date_to"
+                                               placeholder="Do" id="dateTo">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Document Types -->
+                            <div class="col-md-6">
+                                <label class="form-label">Typy Dokumentów</label>
+                                <select class="form-select" name="document_types" multiple>
+                                    <option value="FV">Faktury VAT</option>
+                                    <option value="WZ">Wydania Zewnętrzne</option>
+                                    <option value="PZ">Przyjęcia Zewnętrzne</option>
+                                    <option value="RW">Rozchód Wewnętrzny</option>
+                                    <option value="PW">Przyjęcie Wewnętrzne</option>
+                                </select>
+                            </div>
+
+                            <!-- Amount Range -->
+                            <div class="col-md-6">
+                                <label class="form-label">Zakres Kwotowy</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="number" class="form-control" name="amount_from"
+                                               placeholder="Od" step="0.01">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" class="form-control" name="amount_to"
+                                               placeholder="Do" step="0.01">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Search Text -->
+                            <div class="col-12">
+                                <label class="form-label">Słowo kluczowe</label>
+                                <input type="text" class="form-control" name="search_text"
+                                       placeholder="Wyszukaj w treści dokumentów, nazwach kontrahentów..."
+                                       id="searchText">
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="col-12">
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search me-1"></i> Szukaj
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="clearSearchForm()">
+                                        <i class="fas fa-times me-1"></i> Wyczyść
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="saveSearchQuery()">
+                                        <i class="fas fa-save me-1"></i> Zapisz zapytanie
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saved Searches -->
+    <div class="row mb-4" id="savedSearchesRow" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-bookmark text-primary me-2"></i>
+                        Zapisane Wyszukiwania
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="savedSearchesList" class="d-flex flex-wrap gap-2">
+                        <!-- Saved searches will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <!-- Search Results -->
+    <div class="row" id="searchResultsRow" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list text-primary me-2"></i>
+                        Wyniki Wyszukiwania
+                        <span class="badge bg-primary ms-2" id="resultsCount">0</span>
+                    </h5>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary btn-sm" onclick="exportResults()">
+                            <i class="fas fa-download me-1"></i> Eksportuj
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="printResults()">
+                            <i class="fas fa-print me-1"></i> Drukuj
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="searchResults">
+                        <!-- Results will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Statistics -->
+    <div class="row mt-4" id="searchStatsRow" style="display: none;">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-1" id="totalResultsStat">0</h4>
+                    <small>Łącznych wyników</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-1" id="companiesSearchedStat">0</h4>
+                    <small>Przeszukanych firm</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-1" id="searchTimeStat">0ms</h4>
+                    <small>Czas wyszukiwania</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="searchLoadingOverlay" class="loading-overlay d-none">
+    <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Wyszukiwanie...</span>
+        </div>
+        <p class="mt-2 text-muted">Przeszukiwanie danych...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+class SearchManager {
+    constructor() {
+        this.currentResults = null;
+        this.savedSearches = this.loadSavedSearches();
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.displaySavedSearches();
+        this.setupQuickFilters();
+        setupCompanySelection();
+    }
+
+    setupEventListeners() {
+        const form = document.getElementById('advancedSearchForm');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.performSearch();
+            });
+        }
+
+        // Auto-save search text
+        const searchText = document.getElementById('searchText');
+        if (searchText) {
+            searchText.addEventListener('input', window.utils.debounce(() => {
+                this.saveCurrentSearchText();
+            }, 1000));
+        }
+    }
+
+    setupQuickFilters() {
+        // Quick filter buttons
+        const quickFilters = [
+            { name: 'Ostatnie 30 dni', dateRange: 30 },
+            { name: 'Ostatnie 90 dni', dateRange: 90 },
+            { name: 'Tylko faktury', types: ['FV'] },
+            { name: 'Wartość > 1000 PLN', amountFrom: 1000 }
+        ];
+
+        // Add quick filter buttons above the form
+        const formCard = document.querySelector('.card-body');
+        const quickFilterHtml = `
+            <div class="mb-3">
+                <small class="text-muted me-2">Szybkie filtry:</small>
+                ${quickFilters.map(filter => `
+                    <button class="btn btn-sm btn-outline-secondary me-1 mb-1"
+                            onclick="applyQuickFilter(${JSON.stringify(filter).replace(/"/g, '&quot;')})">
+                        ${filter.name}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        formCard.insertAdjacentHTML('afterbegin', quickFilterHtml);
+    }
+
+    async performSearch() {
+        try {
+            const startTime = performance.now();
+            this.showLoading();
+
+            const formData = this.getFormData();
+            const response = await window.apiClient.post('/api/advanced_search', formData);
+
+            const endTime = performance.now();
+            const searchTime = Math.round(endTime - startTime);
+
+            this.currentResults = response;
+            this.displayResults(response, searchTime);
+            this.updateStatistics(response, searchTime);
+
+            window.showNotification('Wyszukiwanie zakończone', 'success');
+
+        } catch (error) {
+            console.error('Search error:', error);
+            window.showNotification('Błąd wyszukiwania: ' + error.message, 'error');
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    getFormData() {
+        const form = document.getElementById('advancedSearchForm');
+        const formData = new FormData(form);
+
+        const searchParams = {
+            firms: formData.getAll('firms'),
+            date_range: {
+                from: formData.get('date_from'),
+                to: formData.get('date_to')
+            },
+            document_types: formData.getAll('document_types'),
+            amount_range: {
+                from: parseFloat(formData.get('amount_from')) || null,
+                to: parseFloat(formData.get('amount_to')) || null
+            },
+            search_text: formData.get('search_text') || ''
+        };
+
+        return searchParams;
+    }
+
+    displayResults(results, searchTime) {
+        const resultsContainer = document.getElementById('searchResults');
+        const resultsRow = document.getElementById('searchResultsRow');
+
+        if (!results || Object.keys(results).length === 0) {
+            resultsContainer.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5>Brak wyników</h5>
+                    <p class="text-muted">Spróbuj zmienić kryteria wyszukiwania</p>
+                </div>
+            `;
+        } else {
+            let html = '';
+            let totalResults = 0;
+
+            for (const [company, data] of Object.entries(results)) {
+                totalResults += this.getCompanyResultsCount(data);
+
+                html += this.createCompanyResultsSection(company, data);
+            }
+
+            resultsContainer.innerHTML = html;
+            document.getElementById('resultsCount').textContent = totalResults;
+        }
+
+        resultsRow.style.display = 'block';
+
+        // Initialize tooltips for results
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+
+    createCompanyResultsSection(company, data) {
+        let sectionHtml = `
+            <div class="company-results mb-4">
+                <h6 class="text-primary mb-3">
+                    <i class="fas fa-building me-1"></i> ${company}
+                </h6>
+        `;
+
+        // Customers section
+        if (data.customers && data.customers.length > 0) {
+            sectionHtml += `
+                <div class="mb-3">
+                    <h6 class="text-muted">Kontrahenci (${data.customers.length})</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Nazwa</th>
+                                    <th>NIP</th>
+                                    <th>Miasto</th>
+                                    <th>Ulica</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.customers.slice(0, 10).map(customer => `
+                                    <tr>
+                                        <td>${customer.NAZWA || '-'}</td>
+                                        <td>${customer.NIP || '-'}</td>
+                                        <td>${customer.MIASTO || '-'}</td>
+                                        <td>${customer.ULICA || '-'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ${data.customers.length > 10 ? `
+                        <button class="btn btn-sm btn-outline-primary" onclick="showMoreResults('${company}', 'customers')">
+                            Pokaż więcej (${data.customers.length - 10} dodatkowych)
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Documents section
+        if (data.documents && data.documents.length > 0) {
+            sectionHtml += `
+                <div class="mb-3">
+                    <h6 class="text-muted">Dokumenty (${data.documents.length})</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Numer</th>
+                                    <th>Data</th>
+                                    <th>Kontrahent</th>
+                                    <th>Wartość</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.documents.slice(0, 10).map(doc => `
+                                    <tr>
+                                        <td>${doc.NR || doc.dokID || '-'}</td>
+                                        <td>${this.formatDate(doc.DATA_WYSTAWIENIA || doc.data)}</td>
+                                        <td>${doc.KONTRAHENT || '-'}</td>
+                                        <td>${this.formatCurrency(doc.n23 || doc.wartosc)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ${data.documents.length > 10 ? `
+                        <button class="btn btn-sm btn-outline-primary" onclick="showMoreResults('${company}', 'documents')">
+                            Pokaż więcej (${data.documents.length - 10} dodatkowych)
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        sectionHtml += '</div>';
+        return sectionHtml;
+    }
+
+    getCompanyResultsCount(data) {
+        let count = 0;
+        if (data.customers) count += data.customers.length;
+        if (data.documents) count += data.documents.length;
+        return count;
+    }
+
+    updateStatistics(results, searchTime) {
+        const statsRow = document.getElementById('searchStatsRow');
+        const totalResultsStat = document.getElementById('totalResultsStat');
+        const companiesSearchedStat = document.getElementById('companiesSearchedStat');
+        const searchTimeStat = document.getElementById('searchTimeStat');
+
+        let totalResults = 0;
+        const companiesSearched = Object.keys(results).length;
+
+        for (const data of Object.values(results)) {
+            totalResults += this.getCompanyResultsCount(data);
+        }
+
+        totalResultsStat.textContent = totalResults;
+        companiesSearchedStat.textContent = companiesSearched;
+        searchTimeStat.textContent = searchTime + 'ms';
+
+        statsRow.style.display = 'flex';
+    }
+
+    saveSearchQuery() {
+        const formData = this.getFormData();
+        const queryName = prompt('Podaj nazwę dla tego zapytania:');
+
+        if (!queryName) return;
+
+        const searchQuery = {
+            name: queryName,
+            params: formData,
+            timestamp: new Date().toISOString()
+        };
+
+        this.savedSearches.push(searchQuery);
+        this.saveSavedSearches();
+        this.displaySavedSearches();
+
+        window.showNotification('Zapytanie zapisane', 'success');
+    }
+
+    loadSavedSearches() {
+        const saved = localStorage.getItem('savedSearches');
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    saveSavedSearches() {
+        localStorage.setItem('savedSearches', JSON.stringify(this.savedSearches));
+    }
+
+    displaySavedSearches() {
+        const container = document.getElementById('savedSearchesList');
+        const row = document.getElementById('savedSearchesRow');
+
+        if (!this.savedSearches || this.savedSearches.length === 0) {
+            row.style.display = 'none';
+            return;
+        }
+
+        const html = this.savedSearches.map(search => `
+            <div class="saved-search-item">
+                <button class="btn btn-sm btn-outline-primary" onclick="loadSavedSearch('${search.name}')">
+                    <i class="fas fa-history me-1"></i> ${search.name}
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteSavedSearch('${search.name}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+
+        container.innerHTML = html;
+        row.style.display = 'block';
+    }
+
+    loadSavedSearch(name) {
+        const search = this.savedSearches.find(s => s.name === name);
+        if (!search) return;
+
+        this.fillForm(search.params);
+        window.showNotification(`Wczytano zapytanie: ${name}`, 'info');
+    }
+
+    deleteSavedSearch(name) {
+        this.savedSearches = this.savedSearches.filter(s => s.name !== name);
+        this.saveSavedSearches();
+        this.displaySavedSearches();
+        window.showNotification('Zapytanie usunięte', 'info');
+    }
+
+    fillForm(params) {
+        // Clear form first
+        clearSearchForm();
+
+        // Fill firms
+        if (params.firms) {
+            params.firms.forEach(firm => {
+                const checkbox = document.getElementById(`firm-${firm}`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+
+        // Fill date range
+        if (params.date_range?.from) {
+            document.getElementById('dateFrom').value = params.date_range.from;
+        }
+        if (params.date_range?.to) {
+            document.getElementById('dateTo').value = params.date_range.to;
+        }
+
+        // Fill search text
+        if (params.search_text) {
+            document.getElementById('searchText').value = params.search_text;
+        }
+
+        // Fill amount range
+        if (params.amount_range?.from) {
+            document.querySelector('input[name="amount_from"]').value = params.amount_range.from;
+        }
+        if (params.amount_range?.to) {
+            document.querySelector('input[name="amount_to"]').value = params.amount_range.to;
+        }
+    }
+
+    saveCurrentSearchText() {
+        const searchText = document.getElementById('searchText').value;
+        sessionStorage.setItem('lastSearchText', searchText);
+    }
+
+    showLoading() {
+        document.getElementById('searchLoadingOverlay').classList.remove('d-none');
+    }
+
+    hideLoading() {
+        document.getElementById('searchLoadingOverlay').classList.add('d-none');
+    }
+
+    formatDate(dateString) {
+        if (!dateString) return '-';
+        return window.utils.formatDate(dateString);
+    }
+
+    formatCurrency(amount) {
+        if (!amount || isNaN(amount)) return '-';
+        return window.utils.formatCurrency(parseFloat(amount));
+    }
+}
+
+// Global functions
+function clearSearchForm() {
+    document.getElementById('advancedSearchForm').reset();
+    // Re-check all firm checkboxes
+    document.querySelectorAll('input[name="firms"]').forEach(cb => cb.checked = true);
+}
+
+function applyQuickFilter(filter) {
+    clearSearchForm();
+
+    if (filter.dateRange) {
+        const today = new Date();
+        const pastDate = new Date(today.setDate(today.getDate() - filter.dateRange));
+        document.getElementById('dateFrom').value = pastDate.toISOString().split('T')[0];
+        document.getElementById('dateTo').value = new Date().toISOString().split('T')[0];
+    }
+
+    if (filter.types) {
+        document.querySelectorAll('select[name="document_types"] option').forEach(opt => {
+            opt.selected = filter.types.includes(opt.value);
+        });
+    }
+
+    if (filter.amountFrom) {
+        document.querySelector('input[name="amount_from"]').value = filter.amountFrom;
+    }
+}
+
+function showMoreResults(company, type) {
+    // TODO: Implement modal with full results
+    window.showNotification(`Pełne wyniki dla ${company} - ${type}`, 'info');
+}
+
+function exportResults() {
+    if (!window.searchManager.currentResults) {
+        window.showNotification('Brak wyników do eksportu', 'warning');
+        return;
+    }
+
+    const filename = `search-results-${window.utils.formatDate(new Date(), 'short')}.json`;
+    window.exportManager.exportToJson(window.searchManager.currentResults, filename);
+}
+
+function printResults() {
+    window.print();
+}
+
+// Company selection functions
+function setupCompanySelection() {
+    // Pobierz aktualnie wybraną firmę
+    fetch('/get_current_company')
+        .then(response => response.json())
+        .then(data => {
+            updateSelectedCompanyDisplay(data.company_info);
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Obsługa zmiany firmy
+    document.querySelectorAll('.company-change').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const companyId = this.getAttribute('data-company-id');
+            changeCompany(companyId);
+        });
+    });
+
+    // Obsługa czyszczenia wyboru
+    const clearSelection = document.getElementById('clearCompanySelection');
+    if (clearSelection) {
+        clearSelection.addEventListener('click', function(e) {
+            e.preventDefault();
+            clearCompanySelection();
+        });
+    }
+}
+
+function updateSelectedCompanyDisplay(companyInfo) {
+    const nameElement = document.getElementById('selectedCompanyName');
+    if (nameElement && companyInfo) {
+        nameElement.textContent = companyInfo.nazwa || companyInfo.db_name;
+    }
+}
+
+function changeCompany(companyId) {
+    fetch('/select_company', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            company_id: companyId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.showNotification('Firma została zmieniona', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            window.showNotification('Nie udało się zmienić firmy', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        window.showNotification('Wystąpił błąd', 'error');
+    });
+}
+
+function clearCompanySelection() {
+    fetch('/clear_company_selection', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/select_company';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        window.showNotification('Wystąpił błąd', 'error');
+    });
+}
+
+// Initialize search manager
+document.addEventListener('DOMContentLoaded', () => {
+    window.searchManager = new SearchManager();
+});
+</script>
+{% endblock %}

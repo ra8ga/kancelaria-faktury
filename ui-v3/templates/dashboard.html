@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Archiwum Danych - Wyszukiwarka{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100">
+    <div class="row h-100">
+        <!-- Sidebar with Statistics -->
+        <div class="col-md-3 col-lg-2 bg-light border-end p-0">
+            <div class="sidebar-sticky">
+                <!-- Company Selection -->
+                <div class="p-3 border-bottom bg-white">
+                    <div class="mb-2">
+                        <small class="text-muted d-block mb-2">Aktywna firma:</small>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-primary w-100 dropdown-toggle" type="button" id="companyDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-building me-1"></i>
+                                <span id="selectedCompanyName">Ładowanie...</span>
+                            </button>
+                            <ul class="dropdown-menu w-100" id="companyDropdownMenu">
+                                <li><h6 class="dropdown-header">Wybierz firmę:</h6></li>
+                                {% for company in companies %}
+                                <li>
+                                    <a class="dropdown-item company-change" href="#" data-company-id="{{ company.db_name }}">
+                                        <i class="fas fa-building me-2"></i>{{ company.nazwa or company.db_name }}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="#" id="clearCompanySelection">
+                                        <i class="fas fa-times me-2"></i>Zmień firmę
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="nav flex-column p-3">
+                    <a class="nav-link active" href="/">
+                        <i class="fas fa-search me-2"></i>Wyszukiwarka
+                    </a>
+                    <a class="nav-link" href="/dashboard">
+                        <i class="fas fa-chart-bar me-2"></i>Dashboard Analityczny
+                    </a>
+                    <a class="nav-link" href="/search">
+                        <i class="fas fa-filter me-2"></i>Wyszukiwanie Zaawansowane
+                    </a>
+                </nav>
+
+                <!-- Quick Stats -->
+                <div class="p-3 border-top">
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Łączne dokumenty:</span>
+                            <strong id="totalDocuments">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Wszyscy kontrahenci:</span>
+                            <strong id="totalCustomers">-</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Aktywna firma:</span>
+                            <strong>1</strong>
+                        </div>
+                    </div>
+                </div>
+
+  
+                <!-- Settings -->
+                <div class="p-3 border-top">
+                    <div class="small">
+                        <button class="btn btn-sm btn-outline-secondary w-100 mb-2" id="themeToggle">
+                            <i class="fas fa-moon me-1"></i> Tryb ciemny
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary w-100" id="exportData">
+                            <i class="fas fa-download me-1"></i> Eksport danych
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9 col-lg-10">
+            <div class="h-100 d-flex flex-column">
+  
+                <!-- Main Search Area - Google-like -->
+                <div class="flex-grow-1 d-flex align-items-center justify-content-center p-4">
+                    <div class="w-100" style="max-width: 600px;">
+                        <!-- Logo/Title -->
+                        <div class="text-center mb-4">
+                            <h1 class="display-4 fw-bold text-primary mb-2">Archiwum</h1>
+                            <p class="text-muted">Wyszukaj firmowe dokumenty i dane</p>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="mb-4">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text"
+                                       class="form-control border-start-0 border-end-0"
+                                       id="mainSearchInput"
+                                       placeholder="Wyszukaj firmy, dokumenty, kontrahentów..."
+                                       autocomplete="off">
+                                <button class="btn btn-primary border-start-0" type="button" id="searchButton">
+                                    <i class="fas fa-search me-2"></i>Szukaj
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Search Suggestions -->
+                        <div class="text-center">
+                            <small class="text-muted">
+                                Przykłady:
+                                <a href="#" class="text-decoration-none me-3">FV</a>
+                                <a href="#" class="text-decoration-none me-3">Warszawa</a>
+                                <a href="#" class="text-decoration-none me-3">ADWKAROLINA</a>
+                                <a href="#" class="text-decoration-none">2024</a>
+                            </small>
+                        </div>
+
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Simple Loading Overlay -->
+<div id="loadingOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none align-items-center justify-content-center" style="background: rgba(255,255,255,0.9); z-index: 9999;">
+    <div class="text-center">
+        <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Ładowanie...</span>
+        </div>
+        <div class="text-muted">Wyszukiwanie...</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Simple search interface
+let companiesData = {{ companies|tojson }};
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSimpleInterface();
+});
+
+function initializeSimpleInterface() {
+    updateQuickStats();
+    setupSearch();
+    setupThemeToggle();
+    setupCompanySelection();
+}
+
+function updateQuickStats() {
+    // Pokaż tylko dane dla wybranej firmy
+    if (companiesData.length === 1) {
+        const company = companiesData[0];
+        const docsEl = document.getElementById('totalDocuments');
+        const custEl = document.getElementById('totalCustomers');
+
+        if (docsEl) docsEl.textContent = (company.financial_summary?.total_documents || 0).toLocaleString();
+        if (custEl) custEl.textContent = (company.kontrahenci_count || 0).toLocaleString();
+    } else {
+        // Jeśli nie wybrano firmy, pokaż 0
+        const docsEl = document.getElementById('totalDocuments');
+        const custEl = document.getElementById('totalCustomers');
+
+        if (docsEl) docsEl.textContent = '0';
+        if (custEl) custEl.textContent = '0';
+    }
+}
+
+function setupSearch() {
+    const searchInput = document.getElementById('mainSearchInput');
+    const searchButton = document.getElementById('searchButton');
+
+    if (searchInput && searchButton) {
+        // Search on Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Search on button click
+        searchButton.addEventListener('click', performSearch);
+
+        // Focus on search input
+        searchInput.focus();
+    }
+
+    // Setup example search links
+    document.querySelectorAll('[href="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const searchInput = document.getElementById('mainSearchInput');
+            if (searchInput) {
+                searchInput.value = this.textContent;
+                performSearch();
+            }
+        });
+    });
+}
+
+function performSearch() {
+    const searchInput = document.getElementById('mainSearchInput');
+    const searchTerm = searchInput.value.trim();
+
+    if (!searchTerm) {
+        showNotification('Wpisz szukaną frazę', 'warning');
+        return;
+    }
+
+    showLoading();
+
+    // Redirect to search page with query
+    setTimeout(() => {
+        window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
+    }, 500);
+}
+
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-theme');
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+            }
+        });
+    }
+}
+
+function showLoading() {
+    document.getElementById('loadingOverlay').classList.remove('d-none');
+    document.getElementById('loadingOverlay').classList.add('d-flex');
+}
+
+function hideLoading() {
+    document.getElementById('loadingOverlay').classList.add('d-none');
+    document.getElementById('loadingOverlay').classList.remove('d-flex');
+}
+
+function setupCompanySelection() {
+    // Pobierz aktualnie wybraną firmę
+    fetch('/get_current_company')
+        .then(response => response.json())
+        .then(data => {
+            updateSelectedCompanyDisplay(data.company_info);
+        })
+        .catch(error => console.error('Error:', error));
+
+    // Obsługa zmiany firmy
+    document.querySelectorAll('.company-change').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const companyId = this.getAttribute('data-company-id');
+            changeCompany(companyId);
+        });
+    });
+
+    // Obsługa czyszczenia wyboru
+    const clearSelection = document.getElementById('clearCompanySelection');
+    if (clearSelection) {
+        clearSelection.addEventListener('click', function(e) {
+            e.preventDefault();
+            clearCompanySelection();
+        });
+    }
+}
+
+function updateSelectedCompanyDisplay(companyInfo) {
+    const nameElement = document.getElementById('selectedCompanyName');
+    if (nameElement && companyInfo) {
+        nameElement.textContent = companyInfo.nazwa || companyInfo.db_name;
+    }
+}
+
+function changeCompany(companyId) {
+    fetch('/select_company', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            company_id: companyId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Firma została zmieniona', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            showNotification('Nie udało się zmienić firmy', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Wystąpił błąd', 'error');
+    });
+}
+
+function clearCompanySelection() {
+    fetch('/clear_company_selection', {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/select_company';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Wystąpił błąd', 'error');
+    });
+}
+
+function showNotification(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'warning' ? 'warning' : type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} position-fixed top-0 end-0 m-3`;
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <i class="fas fa-${type === 'warning' ? 'exclamation-triangle' : type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+        ${message}
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+</script>
+{% endblock %}
