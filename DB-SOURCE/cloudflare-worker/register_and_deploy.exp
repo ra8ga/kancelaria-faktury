@@ -1,0 +1,51 @@
+#!/usr/bin/expect -f
+
+# Expect script to automate workers.dev subdomain registration and deployment
+
+set timeout 60
+set account_id "f69d84520904e4266f75a0f0827c1144"
+set subdomain "ra8ga-archiwum"
+
+# Set environment variables
+set env(CLOUDFLARE_ACCOUNT_ID) $account_id
+
+spawn wrangler deploy
+
+expect {
+    "Would you like to register a workers.dev subdomain now?" {
+        send "Y\r"
+        exp_continue
+    }
+    "What would you like your workers.dev subdomain to be?" {
+        send "$subdomain\r"
+        exp_continue
+    }
+    "Ok to proceed?" {
+        send "Y\r"
+        exp_continue
+    }
+    "Registering" {
+        exp_continue
+    }
+    "Successfully registered" {
+        exp_continue
+    }
+    "Uploaded" {
+        exp_continue
+    }
+    "Worker deployed successfully" {
+        puts "\n✅ SUCCESS: Worker deployed successfully!"
+        puts "🌐 Your API is available at: https://$subdomain.workers.dev"
+        puts "🧪 Test with: curl https://$subdomain.workers.dev/health"
+        exp_continue
+    }
+    timeout {
+        puts "\n⏰ TIMEOUT: Operation took too long"
+        exit 1
+    }
+    eof {
+        puts "\n📋 Deployment process completed"
+    }
+}
+
+interact

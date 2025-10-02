@@ -1,0 +1,30 @@
+#!/usr/bin/expect -f
+
+# Simple expect script for workers.dev registration
+
+set timeout 30
+spawn wrangler deploy
+
+expect {
+    "Would you like to register a workers.dev subdomain now?" {
+        send "yes\r"
+        expect "What would you like your workers.dev subdomain to be?" {
+            send "ra8ga-archiwum\r"
+            expect "Ok to proceed?" {
+                send "Y\r"
+                expect {
+                    "Successfully deployed" {
+                        puts "\n✅ SUCCESS: Worker deployed!"
+                        puts "🌐 https://ra8ga-archiwum.workers.dev"
+                    }
+                    timeout {
+                        puts "\n⏰ Timeout during deployment"
+                    }
+                }
+            }
+        }
+    }
+    timeout {
+        puts "\n⏰ Timeout: Registration process"
+    }
+}
