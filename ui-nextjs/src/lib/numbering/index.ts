@@ -3,30 +3,31 @@ export type NumberingSettings = {
   prefix: string; // e.g., 'FV'
 };
 
-const LS_KEY_PREFIX = 'invoiceSeq'; // stored as `${LS_KEY_PREFIX}:${YYYY}-${MM}` -> number
+const LS_KEY_PREFIX = "invoiceSeq"; // stored as `${LS_KEY_PREFIX}:${YYYY}-${MM}` -> number
 
 function monthKey(date: Date) {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   return `${year}-${month}`;
 }
 
 function getNextSequence(date: Date): number {
-  if (typeof window === 'undefined') return 1; // SSR safeguard
-  const key = `${LS_KEY_PREFIX}:${monthKey(date)}`;
-  const current = Number(localStorage.getItem(key) || '0');
-  const next = current + 1;
-  localStorage.setItem(key, String(next));
+  // Tymczasowa sekwencja po stronie klienta bez localStorage — backend powinien nadać finalny numer
+  const ms = date.getTime();
+  const next = (ms % 1000) + 1; // 001..1000 pseudo-unikalne w czasie
   return next;
 }
 
 function padSeq(n: number) {
-  return String(n).padStart(3, '0');
+  return String(n).padStart(3, "0");
 }
 
-export function nextInvoiceNumber(settings: NumberingSettings = { prefix: 'FV' }, date: Date = new Date()) {
+export function nextInvoiceNumber(
+  settings: NumberingSettings = { prefix: "FV" },
+  date: Date = new Date()
+) {
   const seq = getNextSequence(date);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   return `${settings.prefix}/${year}/${month}/${padSeq(seq)}`;
 }

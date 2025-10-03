@@ -1,0 +1,128 @@
+{
+  "companies": [],
+  "schema": {},
+  "table_groups": {},
+  "api_endpoints": {
+    "core": [
+      "/health",
+      "/api/companies_summary",
+      "/api/companies/{company_id}",
+      "/api/companies/{company_id}/summary"
+    ],
+    "documents": [],
+    "contractors": [],
+    "products": [],
+    "financial": [],
+    "warehouses": [],
+    "payments": [],
+    "dictionary": []
+  },
+  "openapi_spec": {
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Archiwum API - Complete Database Access",
+      "description": "Complete REST API for accessing 0 companies with 0 tables",
+      "version": "2.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://archiwum-worker.ra8ga-archiwum.workers.dev",
+        "description": "Production server"
+      }
+    ],
+    "paths": {
+      "/health": {
+        "get": {
+          "summary": "Get core data",
+          "tags": [
+            "Core"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/companies_summary": {
+        "get": {
+          "summary": "Get all companies",
+          "tags": [
+            "Core"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Company"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/companies/{company_id}": {
+        "get": {
+          "summary": "Get core data",
+          "tags": [
+            "Core"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/companies/{company_id}/summary": {
+        "get": {
+          "summary": "Get financial summary for company",
+          "tags": [
+            "Core"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/FinancialSummary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {}
+    }
+  }
+}

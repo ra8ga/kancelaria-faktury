@@ -1,0 +1,58 @@
+{
+  "companies": [],
+  "table_groups": {},
+  "schema": {},
+  "endpoints": {
+    "core": [
+      {
+        "path": "/health",
+        "method": "GET",
+        "description": "Health check"
+      },
+      {
+        "path": "/api/companies",
+        "method": "GET",
+        "description": "Get all companies"
+      },
+      {
+        "path": "/api/companies/{company_id}",
+        "method": "GET",
+        "description": "Get company details"
+      },
+      {
+        "path": "/api/companies/{company_id}/summary",
+        "method": "GET",
+        "description": "Get company summary"
+      },
+      {
+        "path": "/api/database/stats",
+        "method": "GET",
+        "description": "Get database statistics"
+      }
+    ],
+    "documents": [],
+    "contractors": [],
+    "products": [],
+    "financial": [],
+    "warehouses": [],
+    "payments": [],
+    "analytics": [],
+    "search": []
+  },
+  "statistics": {
+    "total_companies": 0,
+    "total_tables": 0,
+    "total_endpoints": 5,
+    "categories": [
+      "core",
+      "documents",
+      "contractors",
+      "products",
+      "financial",
+      "warehouses",
+      "payments",
+      "analytics",
+      "search"
+    ]
+  }
+}

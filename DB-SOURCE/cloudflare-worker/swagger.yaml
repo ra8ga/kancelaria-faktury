@@ -1,0 +1,191 @@
+openapi: 3.0.3
+info:
+  title: Archiwum API
+  description: |
+    REST API for accessing historical company data from migrated SQL Server databases.
+
+    This API provides access to company information, financial records, and document metadata
+    from 8 law firms' databases that have been migrated to Cloudflare D1.
+
+    ## Available Data
+    - 8 companies (law firms)
+    - 254 database tables
+    - ~8,000 records
+    - Documents, contracts, financial data
+
+    ## Authentication
+    Currently no authentication required (public data).
+
+    ## Base URL
+    `http://archiwum-worker.ra8ga-archiwum.workers.dev`
+
+    ## CORS
+    API supports CORS with `Access-Control-Allow-Origin: *`
+  version: 1.0.0
+  contact:
+    name: Archiwum API Support
+    url: https://github.com/ra8ga/kancelaria-faktury
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://archiwum-worker.ra8ga-archiwum.workers.dev
+    description: Production server (HTTP only)
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Simple health check endpoint to verify API is running
+      tags:
+        - Health
+      responses:
+        '200':
+          description: API is healthy and operational
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              example:
+                ok: true
+
+  /api/companies_summary:
+    get:
+      summary: Get Companies Summary
+      description: |
+        Returns a summary of all companies with key metrics including:
+        - Company names and identification (NIP, REGON)
+        - Address information
+        - Number of contractors
+        - Number of documents
+
+        This endpoint provides an overview of all available company data
+        without accessing sensitive information.
+      tags:
+        - Companies
+      responses:
+        '200':
+          description: Successfully retrieved companies summary
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanySummary'
+              example:
+                - db_name: "ADWKAROLINA"
+                  nazwa: "Kancelaria Adwokacka Adw. Karolina Więckowska- Kasner"
+                  nip: "6292370846"
+                  regon: "276405042"
+                  miasto: "DĄBROWA GÓRNICZA"
+                  ulica: "3-go MAJA"
+                  kod: "41-300"
+                  kontrahenci_count: 20
+                  dokumenty_count: 132
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    CompanySummary:
+      type: object
+      description: Summary information about a company
+      properties:
+        db_name:
+          type: string
+          description: Database identifier for the company
+          example: "ADWKAROLINA"
+        nazwa:
+          type: string
+          description: Full legal name of the company
+          example: "Kancelaria Adwokacka Adw. Karolina Więckowska- Kasner"
+        nip:
+          type: string
+          nullable: true
+          description: Tax Identification Number (NIP)
+          example: "6292370846"
+        regon:
+          type: string
+          nullable: true
+          description: Statistical Identification Number (REGON)
+          example: "276405042"
+        miasto:
+          type: string
+          nullable: true
+          description: City
+          example: "DĄBROWA GÓRNICZA"
+        ulica:
+          type: string
+          nullable: true
+          description: Street address
+          example: "3-go MAJA"
+        kod:
+          type: string
+          nullable: true
+          description: Postal code
+          example: "41-300"
+        kontrahenci_count:
+          type: integer
+          description: Number of contractors/clients
+          example: 20
+        dokumenty_count:
+          type: integer
+          description: Number of documents in the system
+          example: 132
+      required:
+        - db_name
+        - nazwa
+        - kontrahenci_count
+        - dokumenty_count
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Database connection failed"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API Key (not implemented yet)
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Companies
+    description: Company data endpoints
+
+examples:
+  CompaniesSummaryExample:
+    value:
+      - db_name: "ADWKAROLINA"
+        nazwa: "Kancelaria Adwokacka Adw. Karolina Więckowska- Kasner"
+        nip: "6292370846"
+        regon: "276405042"
+        miasto: "DĄBROWA GÓRNICZA"
+        ulica: "3-go MAJA"
+        kod: "41-300"
+        kontrahenci_count: 20
+        dokumenty_count: 132
+      - db_name: "ADWRyszardWieckow"
+        nazwa: "KANCELARIA ADWOKACKA ADW. RYSZARD WIĘCKOWSKI"
+        nip: "629-100-22-99"
+        regon: null
+        miasto: "DĄBROWA GÓRNICZA"
+        ulica: "3-GO MAJA"
+        kod: "41-300"
+        kontrahenci_count: 32
+        dokumenty_count: 400

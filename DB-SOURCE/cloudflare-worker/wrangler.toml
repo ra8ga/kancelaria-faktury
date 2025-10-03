@@ -11,5 +11,11 @@ name = "archiwum-api"
 [[d1_databases]]
 binding = "ARCHIWUM_DB"
 database_name = "archiwum-danych"
-# Uzupełnij ID po utworzeniu bazy: `wrangler d1 create archiwum-danych`
+# Archiwalna baza (tylko odczyt)
 database_id = "b0db5c41-2ccc-48d4-ba3e-d37a017b13fd"
+
+[[d1_databases]]
+binding = "PRODUCTION_DB"
+database_name = "archiwum-produkcja"
+# Produkcyjna baza z CRUD
+database_id = "a4627ed8-c467-42eb-8469-e3c24eb28e83"
